@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';  //for date format
 import 'package:intl/date_symbol_data_local.dart';  //for date locale
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 import 'customTimePicker.dart';
 
@@ -26,6 +28,8 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  Position _currentPosition;
+  String _currentAddress;
   //DaftarPekerjaan repo = DaftarPekerjaan();
   var dataJson,_daftarPekerjaan,_daftarSubPekerjaan;
   //List<DaftarPekerjaan> semuaPekerjaan;
@@ -54,39 +58,7 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController ctrlIdSubPekerjaan = new TextEditingController();
   TextEditingController ctrlUraianPekerjaan = new TextEditingController();
 
-  
-  //List<DaftarPekerjaan> _list = [];
-  //DaftarPekerjaan objJson;
-//  List<Map> getAll() => _list;
-//  List _list = [];
-  //List<String> _list =[""] ;
   var loading = false;
-//  Future<Null> _fetchData()async{
-//    setState(() {
-//      loading = true;
-//    });
-//    final response = await http.get("http://103.86.103.66/siltapkin/2020/index.php/api/master_data/pekerjaan?token=MTk3MDA4MjgxOTk3MDMxMDEy");
-//    if(response.statusCode == 200){
-//      dataJson = jsonDecode(response.body);
-//      _daftarPekerjaan = dataJson['data'];
-//      _daftarSubPekerjaan = _daftarPekerjaan["subpekerjaan"];
-//      setState(() {
-//        if(dataJson == null){
-//          return Center(
-//            child: Text("Data tidak ditemuakan"),
-//          );
-//        }else{
-//          for(Map i in _daftarPekerjaan){
-//            _states.add(DaftarPekerjaan.fromJson(_daftarPekerjaan[i]["namapekerjaan"]).toString());
-//            for(Map z in _daftarSubPekerjaan){
-//              _subPekerjaan.add(DaftarPekerjaan.fromJson(_daftarSubPekerjaan[z]["standarwaktu"]).toString());
-//            }
-//          }
-//        }
-//        loading = false;
-//      });
-//    }
-//  }
   Future<String> _populateDropdown() async {
     await getPref();
     setState(() {
@@ -116,6 +88,8 @@ class _FormScreenState extends State<FormScreen> {
     //DaftarPekerjaan pekerjaan = semuaPekerjaan[]
     //List<String> getPekerjaan() => _list.map((map) => DaftarPekerjaan.fromJson(map)).map(item) =>ite
     //_fetchData();
+    _getCurrentLocation();
+
     getPref();
     _populateDropdown();
     //Jika ada lemparan dari second_fragment (Edit) maka dilakukan berikut
@@ -463,204 +437,6 @@ class _FormScreenState extends State<FormScreen> {
                       ),
                     ),
                     color: Colors.white,
-
-//                    onPressed: () async {
-//                        showModalBottomSheet<dynamic>(
-//                            shape: RoundedRectangleBorder(
-//                              borderRadius: BorderRadius.circular(20.0),
-//                            ),
-//                            context: context,
-//                            builder: (BuildContext builder) {
-//                              if(_timeMulai=="Belum diset"){
-//                                //_timeMulai=="0:2";
-//                                return Wrap(
-//                                    children: <Widget>[
-//                                      Stack(
-//                                          children: [
-//                                            Container(
-//                                              width: double.infinity,
-//                                              height: 36.0,
-//                                              child: Center(
-//                                                  child: Text("Jam mulai belum diset !",style: TextStyle(shadows: [
-//                                                    Shadow(
-//                                                      blurRadius: 10.0,
-//                                                      color: Colors.blue,
-//                                                      offset: Offset(5.0, 5.0),
-//                                                    ),
-//                                                  ],fontSize: 20.0,fontWeight: FontWeight.bold,color: Colors.red,),) // Your desired title
-//                                              ),
-//                                            ),
-//                                            Positioned(
-//                                                right: 0.0,
-//                                                top: 0.0,
-//                                                child: IconButton(
-//                                                    icon: Icon(Icons.close), // Your desired icon
-//                                                    onPressed: () {
-//                                                      Navigator.of(context).pop();
-//                                                    }
-//                                                )
-//                                            )
-//                                          ]
-//                                      ),
-//                                      GestureDetector(
-//                                        onTap: () => Navigator.of(context).pop(),
-//                                        // closing showModalBottomSheet
-//                                        child: Container(
-//                                          height: MediaQuery.of(context).copyWith().size.height * 0.30,
-//                                          child: Center(
-//                                            child: Text("Sebelum mengisi jam selesai, silahkan isikan jam mulai terlebih dahulu !",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,), textAlign: TextAlign.center),
-//                                          ),
-//                                        ),
-//                                      )
-//                                    ]
-//                                );
-//                              }else {
-//                                return Wrap(
-//                                    children: <Widget>[
-//                                      Stack(
-//                                          children: [
-//                                            Container(
-//                                              width: double.infinity,
-//                                              height: 36.0,
-//                                              child: Center(
-//                                                  child: Text(
-//                                                      "Pilih Waktu") // Your desired title
-//                                              ),
-//                                            ),
-//                                            Positioned(
-//                                                right: 0.0,
-//                                                top: 0.0,
-//                                                child: IconButton(
-//                                                    icon: Icon(Icons
-//                                                        .check_circle_outline),
-//                                                    // Your desired icon
-//                                                    onPressed: () {
-//                                                      Navigator.of(context).pop();
-//                                                    }
-//                                                )
-//                                            )
-//                                          ]
-//                                      ),
-//                                      GestureDetector(
-//                                        onTap: () => Navigator.of(context).pop(),
-//                                        // closing showModalBottomSheet
-//                                        child: Container(
-//                                          height: MediaQuery
-//                                              .of(context)
-//                                              .copyWith()
-//                                              .size
-//                                              .height * 0.30,
-//                                          child: CustomCupertinoTimerPicker(
-//                                            mode: CupertinoTimerPickerMode.hm,
-//                                            minuteInterval: 1,
-//                                            initialTimerDuration: Duration(
-//                                                hours: timeLimit.hour,
-//                                                minutes: timeLimit.minute),
-//                                            startRestriction: TimeOfDay(hour:int.parse(_timeMulai.split(":")[0]),minute: int.parse(_timeMulai.split(":")[1])),
-//                                            endRestriction: endTime,
-//                                            onTimerDurationChanged: (
-//                                                Duration changedtimer) {
-//                                              print(changedtimer);
-//                                              int minute = changedtimer.inMinutes % 60;
-//                                              int hour = changedtimer.inMinutes ~/  60;
-//                                              setState(() {
-//                                                if (_timeMulai == "00:02") {
-//                                                  AlertDialog(
-//                                                    title: new Text(
-//                                                        "Jam Mulai belum diset"),
-//                                                    content: new Text(
-//                                                        "Silahkan isikan jam mulai sebelum mengisi jam selesai"),
-//                                                    actions: <Widget>[
-//                                                      // usually buttons at the bottom of the dialog
-//                                                      new FlatButton(
-//                                                        child: new Text("Tutup"),
-//                                                        onPressed: () {
-//                                                          Navigator.of(context)
-//                                                              .pop();
-//                                                        },
-//                                                      ),
-//                                                    ],
-//                                                  );
-//                                                } else {
-//                                                  _timeSelesai =
-//                                                      hour.toString() + ":" +
-//                                                          minute.toString();
-//                                                }
-//                                                //timeLimit = TimeOfDay(hour: hour, minute: minute);
-//                                              });
-//                                            },
-//                                          ),
-//                                        ),
-//                                      )
-//                                    ]
-//                                );
-//                              }
-//
-//                            }
-//                        );
-//
-//                    },
-//                    {
-//                      DatePicker.showTimePicker(context,
-//                          theme: DatePickerTheme(containerHeight: 210.0,),
-//                          showTitleActions: true, onConfirm: (time) {
-//                            print('confirm $time');
-//                            String jam = DateFormat('HH').format(time);
-//                            String menit = DateFormat('mm').format(time);
-//                            _timeSelesai = (time.hour >= 0) ? '${jam}:${menit}'.padLeft(2,'0'):'${jam}:${menit}';//'${time.hour}:${time.minute}'.padLeft(2,"0");
-//                            setState(() {});},
-//                          currentTime: DateTime.now(),
-//                          showSecondsColumn: false,
-//                          locale: LocaleType.id);
-//                      setState(() {});
-//                    },
-//                    child: Container(
-//                      alignment: Alignment.center,
-//                      height: 50.0,
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                        children: <Widget>[
-//                          Row(
-//                            children: <Widget>[
-//                              Column(
-//                                mainAxisAlignment: MainAxisAlignment.center,
-//                                crossAxisAlignment: CrossAxisAlignment.start,//membuat isi kolom rata kiri
-//                                children: <Widget>[
-//                                  Text("Jam Selesai",style: Theme.of(context).textTheme.caption),
-//                                  Container(
-//                                    child: Row(
-//                                      children: <Widget>[
-//                                        Icon(
-//                                          Icons.access_time,
-//                                          size: 18.0,
-//                                          color: Colors.teal,
-//                                        ),
-//                                        Text(
-//                                          " $_timeSelesai",
-//                                          style: TextStyle(
-//                                              color: Colors.teal,
-//                                              fontWeight: FontWeight.bold,
-//                                              fontSize: 18.0),
-//                                        ),
-//                                      ],
-//                                    ),
-//                                  )
-//                                ],
-//                              ),
-//
-//                            ],
-//                          ),
-//                          Text(
-//                            "  Ubah",
-//                            style: TextStyle(
-//                                color: Colors.teal,
-//                                fontWeight: FontWeight.bold,
-//                                fontSize: 18.0),
-//                          ),
-//                        ],
-//                      ),
-//                    ),
-//                    color: Colors.white,
                   ),
                   SizedBox(
                     height: 10,
@@ -675,6 +451,31 @@ class _FormScreenState extends State<FormScreen> {
                           hintText: 'Uraian Pekerjaan',
                         ),
                       )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 18.0, right: 18.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _currentPosition!=null? Text('Latitude: ${_currentPosition.latitude}') : Text('Menunggu Koordinat Lat'),
+                          _currentPosition!=null? Text('Longitude: ${_currentPosition.longitude}') : Text('Menunggu Koordinat Long'),
+                          _currentAddress!=null? Text('Alamat: ${_currentAddress}') : Text('Menunggu Alamat'),
+                          // if (_currentPosition != null) Text(
+                          //     "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
+                          // ),
+                          // Text("LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
+                          // FlatButton(
+                          //   child: Text("Get location"),
+                          //   onPressed: () {
+                          //     _getCurrentLocation();
+                          //   },
+                          // ),
+                        ],
+                      ),
                   ),
                   SizedBox(
                     height: 10,
@@ -781,6 +582,33 @@ class _FormScreenState extends State<FormScreen> {
         )
       )
     );
+  }
+
+  _getCurrentLocation() {
+    Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+        _getAddressFromLatLng(_currentPosition.latitude.toDouble(),_currentPosition.longitude.toDouble());
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  _getAddressFromLatLng(double lat, double long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
 //  void _onSelectedState(String value) {

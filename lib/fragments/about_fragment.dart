@@ -12,16 +12,16 @@ class AboutFragment extends StatelessWidget {
       child: new Stack(
         //alignment:new Alignment(x, y)
         children: <Widget>[
-          new Positioned(
-            child: new Center(
-              child: new Column(
-                children: <Widget>[
-                  new Text("2021 \u00a9 Dinas Kominfo Kabupaten Kebumen"),
-                  new Text("All rights reserved"),
-                ],
-              ),
-            )
-          ),
+          // new Positioned(
+          //   child: new Center(
+          //     child: new Column(
+          //       children: <Widget>[
+          //         // new Text("2022 \u00a9 Dinas Kominfo Kabupaten Kebumen"),
+          //         new Text("All rights reserved"),
+          //       ],
+          //     ),
+          //   )
+          // ),
           new Positioned(
             child: new Center(
               child: new Column(
@@ -40,7 +40,7 @@ class AboutFragment extends StatelessWidget {
                       textColor: Colors.white,
                       splashColor: Colors.grey,
                       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: new Text('Manual E-Kinerja Android'),
+                      child: new Text('Manual E-Kertas Android'),
                     ),
                   ),
                 ],
@@ -50,7 +50,30 @@ class AboutFragment extends StatelessWidget {
           new Positioned(
             child: new Align(
                 alignment: FractionalOffset.bottomCenter,
-                child: new Text("Develop by Imanaji Hari Sayekti"),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    new Text("All rights reserved"),
+                    new Text("\u00a9 2022 Dinas Kominfo Kabupaten Kebumen"),
+                    new Text("Develop by Imanaji Hari Sayekti",style: TextStyle(
+                      color: Colors.black12,
+                      fontFamily: 'Pasifico',
+                    ),)
+                  ],
+                  )
+                // new Text("Develop by Imanaji Hari Sayekti",
+                //   style: TextStyle(
+                //     color: Colors.black12,
+                //     fontFamily: 'Pasifico',
+                //     // shadows: <Shadow>[
+                //     //   Shadow(
+                //     //     offset: Offset(0.0, 0.0),
+                //     //     blurRadius: 5.0,
+                //     //     color: Colors.black12,
+                //     //   ),
+                //     // ],
+                //   )
+                // ),
             ),
           )
         ],
@@ -70,7 +93,7 @@ class AboutFragment extends StatelessWidget {
 //          )
 //        ],
 //      ),
-////      child: new Text("Develop by Imanaji Hari Sayekti \nCopyright 2020 Dinas Kominfo Kabupaten Kebumen \nAll rights reserved \nVersion 1.0.b.04082020"),
+////      child: new Text("Develop by Imanaji Hari Sayekti \nCopyright 2022 Dinas Kominfo Kabupaten Kebumen \nAll rights reserved \nVersion 1.0.b.04082020"),
 //    );
   }
 

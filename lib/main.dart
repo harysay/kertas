@@ -53,7 +53,7 @@ class _MyApp extends State<MyApp> {
   Widget build(BuildContext context) {
     MaterialColor colorCustom;
     if(statusRun=="1"){
-      colorCustom = MaterialColor(0xFFFF6C37, color);
+      colorCustom = MaterialColor(0xFF007bff, color);
       return MaterialApp(
         builder: (context,widget) => Navigator(
           onGenerateRoute: (settings) => MaterialPageRoute(
@@ -84,7 +84,7 @@ class _MyApp extends State<MyApp> {
 //        routes: widget.routes,
       );
     }else{
-      colorCustom = MaterialColor(0xFFFF6C37, color);
+      colorCustom = MaterialColor(0xFF007bff, color);
       return MaterialApp(
           title: 'E-Kertas',
           debugShowCheckedModeBanner: false,

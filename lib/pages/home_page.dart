@@ -168,10 +168,10 @@ class HomePageState extends State<HomePage> {
                         Text(tarikanLamaAktivitas??'tidak terdefinisi'),
                         Text(' jam'),
                       ],),
-                      Row(children: <Widget>[
-                        Text('Grade: '),
-                        Text(tarikanGrade??'tidak terdefinisi'),
-                      ],)
+                      // Row(children: <Widget>[
+                      //   Text('Grade: '),
+                      //   Text(tarikanGrade??'tidak terdefinisi'),
+                      // ],)
                     ],
                   ),
 
@@ -182,7 +182,8 @@ class HomePageState extends State<HomePage> {
               new CircleAvatar(
                 backgroundImage: new NetworkImage(linkfoto),
               ),decoration: new BoxDecoration(
-                  color: Colors.deepOrange[300]
+                  // color: Colors.deepOrange[300]
+                color: Colors.blueAccent
             ),
               otherAccountsPictures: <Widget>[
 

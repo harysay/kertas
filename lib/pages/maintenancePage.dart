@@ -23,7 +23,7 @@ class MaintenancePage extends StatelessWidget {
             ),
             Container(
               color: Colors.deepOrange[300],
-              child: Text('Mohon Maaf, untuk sementara aplikasi sedang tidak bisa digunakan. Silahkan tunggu beberapa saat lagi',textAlign: TextAlign.center,style: TextStyle(fontSize: 16))
+              child: Text('Mohon Maaf, untuk sementara aplikasi sedang tidak bisa digunakan. Silahkan coba beberapa saat lagi',textAlign: TextAlign.center,style: TextStyle(fontSize: 16))
             ),
 //            Center(
 //                child: DecoratedBox( // here is where I added my DecoratedBox

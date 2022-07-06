@@ -31,7 +31,7 @@ class ThirdFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MaterialColor colorCustom = MaterialColor(0xFFFF6C37, color);
+    MaterialColor colorCustom = MaterialColor(0xFF007bff, color);
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: colorCustom,

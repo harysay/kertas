@@ -35,7 +35,7 @@ class ApiService {
   static String baseSudahverfiPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/verif_individu_bulanan?token=";
   String baseDaftarPekerjaan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/master_data/pekerjaan_lepas?token=";
   static String versionCodeSekarang = "9"; //harus sama dengan version di buildernya
-  static String versionBuildSekarang = "Version 2.0.db.29112021";
+  static String versionBuildSekarang = "Version 1.0.db.06062022";
 
   //Production
  // String urlGetdataPribadi = "https://tukin.kebumenkab.go.id/api/rekam/dataDiri?token=";

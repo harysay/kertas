@@ -65,11 +65,11 @@ class _LoginPageState extends State<LoginPage> {
     // jika formnya valid dan tidak ada yg ksong maka akan di save
     if (form.validate()) {
       form.save();
-      setState(() {
-        _loginStatus = LoginStatus.signIn;
-        savePref(value, "197008281997031012", "MTk3MDA4MjgxOTk3MDMxMDEy","LUHUR RAHPINUJI, S.IP.","https://development.kebumenkab.go.id/siltapkin/2020/assets/images/ndak_jelas.png","32","Kabid Pengelolaan Data Elektronik","2146576612");
-      });
-      // login();
+      // setState(() {
+      //   _loginStatus = LoginStatus.signIn;
+      //   savePref(value, "197008281997031012", "MTk3MDA4MjgxOTk3MDMxMDEy","LUHUR RAHPINUJI, S.IP.","https://development.kebumenkab.go.id/siltapkin/2020/assets/images/ndak_jelas.png","32","Kabid Pengelolaan Data Elektronik","2146576612");
+      // });
+      login();
 
       // print("$username, $password");
     }
