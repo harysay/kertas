@@ -135,8 +135,8 @@ class SMMIconButton extends StatelessWidget {
   /// The [icon] argument must be specified, and is typically either an [Icon]
   /// or an [ImageIcon].
   const SMMIconButton({
-    Key key,
-    @required this.icon,
+    Key? key,
+    required this.icon,
     this.size = kSMMIconButtonSize,
     this.iconSize = kSMMIconButtonIconSize,
     this.color,
@@ -145,7 +145,7 @@ class SMMIconButton extends StatelessWidget {
     this.highlightColor,
     this.splashColor,
     this.disabledColor,
-    @required this.onPressed,
+    required this.onPressed,
     this.focusNode,
     this.autofocus = false,
     this.tooltip,
@@ -185,12 +185,12 @@ class SMMIconButton extends StatelessWidget {
   /// The color for the button's icon when it has the input focus.
   ///
   /// Defaults to [ThemeData.focusColor] of the ambient theme.
-  final Color focusColor;
+  final Color? focusColor;
 
   /// The color for the button's icon when a pointer is hovering over it.
   ///
   /// Defaults to [ThemeData.hoverColor] of the ambient theme.
-  final Color hoverColor;
+  final Color? hoverColor;
 
   /// The color to use for the icon inside the button, if the icon is enabled.
   /// Defaults to leaving this up to the [icon] widget.
@@ -206,7 +206,7 @@ class SMMIconButton extends StatelessWidget {
   ///   icon: Icons.widgets,
   /// )
   /// ```
-  final Color color;
+  final Color? color;
 
   /// The primary color of the button when the button is in the down (pressed) state.
   /// The splash is represented as a circular overlay that appears above the
@@ -216,7 +216,7 @@ class SMMIconButton extends StatelessWidget {
   /// color has transparency then the highlight and button color will show through.
   ///
   /// Defaults to the Theme's splash color, [ThemeData.splashColor].
-  final Color splashColor;
+  final Color? splashColor;
 
   /// The secondary color of the button when the button is in the down (pressed)
   /// state. The highlight color is represented as a solid color that is overlaid over the
@@ -224,7 +224,7 @@ class SMMIconButton extends StatelessWidget {
   /// will show through. The highlight fades in quickly as the button is held down.
   ///
   /// Defaults to the Theme's highlight color, [ThemeData.highlightColor].
-  final Color highlightColor;
+  final Color? highlightColor;
 
   /// The color to use for the icon inside the button, if the icon is disabled.
   /// Defaults to the [ThemeData.disabledColor] of the current [Theme].
@@ -232,7 +232,7 @@ class SMMIconButton extends StatelessWidget {
   /// The icon is disabled if [onPressed] is null.
   ///
   /// See also [color].
-  final Color disabledColor;
+  final Color? disabledColor;
 
   /// The callback that is called when the button is tapped or otherwise activated.
   ///
@@ -240,7 +240,7 @@ class SMMIconButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   /// {@macro flutter.widgets.Focus.focusNode}
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// {@macro flutter.widgets.Focus.autofocus}
   final bool autofocus;
@@ -249,7 +249,7 @@ class SMMIconButton extends StatelessWidget {
   ///
   /// This text is displayed when the user long-presses on the button and is
   /// used for accessibility.
-  final String tooltip;
+  final String? tooltip;
 
   /// Whether detected gestures should provide acoustic and/or haptic feedback.
   ///
@@ -266,7 +266,7 @@ class SMMIconButton extends StatelessWidget {
     assert(debugCheckHasMaterial(context));
     Color currentColor;
     if (onPressed != null)
-      currentColor = color;
+      currentColor = color!;
     else
       currentColor = disabledColor ?? Theme.of(context).disabledColor;
 

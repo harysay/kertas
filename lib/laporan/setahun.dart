@@ -14,18 +14,18 @@ class Setahun extends StatefulWidget {
 
 class _SetahunState extends State<Setahun> {
   ApiService api = new ApiService();
-  String tokenlogin;
+  String? tokenlogin;
   var json;
   bool toggle = true;
-  List<JsonTableColumn> columns;
-  String getData;
+  List<JsonTableColumn>? columns;
+  String? getData;
 
   void setJson() async{
     //await getPref();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     tokenlogin = preferences.getString("tokenlogin");
     DateTime now = new DateTime.now();
-    api.laporanInividuTahunan(tokenlogin, now.year.toString()).then((data){
+    api.laporanInividuTahunan(tokenlogin!, now.year.toString()).then((data){
       setState(() {
         json = data;
       });
@@ -74,18 +74,18 @@ class _SetahunState extends State<Setahun> {
               columns: columns,
               showColumnToggle: true,
               allowRowHighlight: true,
-              rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
+              rowHighlightColor: Colors.yellow[500]?.withOpacity(0.7),
               onRowSelect: (index, map) {
                 ShowFunctions.showToast(msg: map.toString()+"Telah diklik");
               },
-              tableHeaderBuilder: (String header) {
+              tableHeaderBuilder: (String? header) {
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   decoration: BoxDecoration(border: Border.all(width: 0.5),color: Colors.grey[300]),
                   child: Text(
-                    header,
+                    header!,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.display1.copyWith(fontWeight: FontWeight.w700, fontSize: 14.0,color: Colors.black87),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.w700, fontSize: 14.0,color: Colors.black87),
                   ),
                 );
               },
@@ -96,7 +96,7 @@ class _SetahunState extends State<Setahun> {
                   child: Text(
                     value,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.display1.copyWith(fontSize: 14.0, color: Colors.grey[900]),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14.0, color: Colors.grey[900]),
                   ),
                 );
               },

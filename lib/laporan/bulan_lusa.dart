@@ -14,11 +14,11 @@ class BulanLusa extends StatefulWidget {
 
 class _BulanLusaState extends State<BulanLusa> {
   ApiService api = new ApiService();
-  String tokenlogin;
+  String? tokenlogin;
   var json;
   bool toggle = true;
-  List<JsonTableColumn> columns;
-  String getData;
+  List<JsonTableColumn>? columns;
+  String? getData;
 
   void setJson() async{
     await getPref();
@@ -30,7 +30,7 @@ class _BulanLusaState extends State<BulanLusa> {
       bulanLusa = 11;
       tahunIni = now.year-1;
     }
-    api.laporanInividu(tokenlogin, bulanLusa.toString(), tahunIni.toString()).then((data){
+    api.laporanInividu(tokenlogin!, bulanLusa.toString(), tahunIni.toString()).then((data){
       setState(() {
         json = data;
       });
@@ -79,7 +79,7 @@ class _BulanLusaState extends State<BulanLusa> {
               columns: columns,
               showColumnToggle: true,
               allowRowHighlight: true,
-              rowHighlightColor: Colors.yellow[500].withOpacity(0.7),
+              rowHighlightColor: Colors.yellow[500]?.withOpacity(0.7),
             ),
             SizedBox(
               height: 16.0,

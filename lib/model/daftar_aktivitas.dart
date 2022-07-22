@@ -2,24 +2,24 @@ import 'dart:convert';
 import 'package:kertas/model/daftar_pegawaiverifikasi.dart';
 
 class DaftarAktivitas{
-  int numb;
-  String idDataKinerja;
-  String idPekerjaan;
-  String tglKinerja;
-  String namaPekerjaan;
-  String uraianPekerjaan;
-  String waktuMengerjakan;
-  String standarWaktu;
-  String waktuDiakui;
-  String status;
-  String idSubPekerjaan;
-  String honorDiakui;
-  String jamMulai;
-  String jamSelesai;
-  String namaSubPekerjaan;
+  int? numb;
+  String? idDataKinerja;
+  String? idPekerjaan;
+  String? tglKinerja;
+  String? namaPekerjaan;
+  String? uraianPekerjaan;
+  String? waktuMengerjakan;
+  String? standarWaktu;
+  String? waktuDiakui;
+  String? status;
+  String? idSubPekerjaan;
+  String? honorDiakui;
+  String? jamMulai;
+  String? jamSelesai;
+  String? namaSubPekerjaan;
   bool selected = false;
 
-  DaftarAktivitas({this.numb,this.idDataKinerja,this.idPekerjaan,this.tglKinerja,this.namaPekerjaan,this.uraianPekerjaan,this.waktuMengerjakan,this.standarWaktu,this.waktuDiakui,this.status,this.idSubPekerjaan,this.honorDiakui,this.jamMulai,this.jamSelesai,this.namaSubPekerjaan});
+  DaftarAktivitas({ this.numb,this.idDataKinerja,this.idPekerjaan,this.tglKinerja,this.namaPekerjaan,this.uraianPekerjaan,this.waktuMengerjakan,this.standarWaktu,this.waktuDiakui,this.status,this.idSubPekerjaan,this.honorDiakui,this.jamMulai,this.jamSelesai,this.namaSubPekerjaan});
   
   factory DaftarAktivitas.fromJson(Map<String, dynamic> map) {
     return DaftarAktivitas(

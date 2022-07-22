@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:kertas/service/ApiService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+// import 'package:package_info/package_info.dart';
 //import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,7 @@ import 'DoNotAskAgainDialog.dart';
 //import 'package:talkfootball/models/app_version.dart';
 
 class UpdateApp extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
 
   UpdateApp({this.child});
 
@@ -27,8 +28,8 @@ class UpdateApp extends StatefulWidget {
 }
 
 class _UpdateAppState extends State<UpdateApp> {
-  String statusRun,getVersionLastServer;
-  String kUpdateDialogKeyName;
+  String? statusRun,getVersionLastServer;
+  String? kUpdateDialogKeyName;
 //  int getVersionLastServer;
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _UpdateAppState extends State<UpdateApp> {
     //await Future.delayed(Duration(seconds: 5));
 
     //Add query here to get the minimum and latest app version
-    final response = await http.get(ApiService.baseStatusRunning);
+    final response = await http.get(Uri.parse(ApiService.baseStatusRunning));
     final stat = jsonDecode(response.body);
     setState(() {
       statusRun = stat['status'];
@@ -62,7 +63,7 @@ class _UpdateAppState extends State<UpdateApp> {
       //Change
       //Parse the result here to get the info
       //AppVersion appVersion = response.results[0] as AppVersion;
-      String minAppVersion = getVersionLastServer;
+      String minAppVersion = getVersionLastServer!;
       String latestAppVersion = ApiService.versionCodeSekarang;
 
 
@@ -76,7 +77,7 @@ class _UpdateAppState extends State<UpdateApp> {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
         bool showUpdates = false;
-        showUpdates = sharedPreferences.getBool("updateAplikasi");
+        showUpdates = sharedPreferences.getBool("updateAplikasi")!;
         if (showUpdates != null && showUpdates == false) {
           return;
         }
@@ -152,7 +153,7 @@ class _UpdateAppState extends State<UpdateApp> {
           ),
           content: Text(message),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(btnLabel),
               onPressed: _onUpdateNowClicked,
             ),
@@ -164,6 +165,6 @@ class _UpdateAppState extends State<UpdateApp> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 }

@@ -93,13 +93,13 @@ abstract class RouteTransition<T extends Widget> extends PageRouteBuilder<T> {
   /// Function to get system Ui to be set when navigating to route
   ///
   /// Defaults to [Constants.AppSstemUIThemes.allScreens.auto(context)]
-  UIFunction checkSystemUi;
+  UIFunction? checkSystemUi;
 
   @override
-  RoutePageBuilder pageBuilder;
+  late RoutePageBuilder pageBuilder;
 
   @override
-  RouteTransitionsBuilder transitionsBuilder;
+  late RouteTransitionsBuilder transitionsBuilder;
 
   /// Variable to disable the animation switch call if ui is already animating.
   ///
@@ -119,7 +119,7 @@ abstract class RouteTransition<T extends Widget> extends PageRouteBuilder<T> {
   bool secondaryIgnore = false;
 
   RouteTransition({
-    @required this.route,
+    required this.route,
     this.checkEntAnimationEnabled = defBoolFunc,
     this.checkExitAnimationEnabled = defBoolFunc,
     this.entCurve = Curves.linearToEaseOut,
@@ -131,7 +131,7 @@ abstract class RouteTransition<T extends Widget> extends PageRouteBuilder<T> {
     this.exitIgnoreEventsReverse = false,
     this.checkSystemUi,
     Duration transitionDuration = kSMMRouteTransitionDuration,
-    RouteSettings settings,
+    RouteSettings? settings,
     bool opaque = true,
     bool maintainState = false,
   }) : super(
@@ -140,9 +140,9 @@ abstract class RouteTransition<T extends Widget> extends PageRouteBuilder<T> {
             maintainState: maintainState,
             transitionDuration: transitionDuration,
             pageBuilder: (
-              BuildContext context,
-              Animation<double> animation,
-              Animation<double> secondaryAnimation,
+              BuildContext? context,
+              Animation<double>? animation,
+              Animation<double>? secondaryAnimation,
             ) {
               return route;
             });
@@ -179,18 +179,18 @@ abstract class RouteTransition<T extends Widget> extends PageRouteBuilder<T> {
 /// [SlideTransition] class, but with [enabled] parameter
 class TurnableSlideTransition extends SlideTransition {
   TurnableSlideTransition(
-      {Key key,
-      @required Animation<Offset> position,
+      {Key? key,
+      required Animation<Offset> position,
       bool transformHitTests: true,
-      TextDirection textDirection,
-      Widget child,
+      required TextDirection textDirection,
+      required Widget? child,
       this.enabled: true})
       : super(
           key: key,
           position: position,
           transformHitTests: transformHitTests,
           textDirection: textDirection,
-          child: child,
+          child: child!,
         );
 
   /// If false, animation won't be played
@@ -208,6 +208,6 @@ class TurnableSlideTransition extends SlideTransition {
         child: child,
       );
     }
-    return child;
+    return child!;
   }
 }

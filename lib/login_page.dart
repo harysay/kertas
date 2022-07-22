@@ -44,9 +44,12 @@ class _LoginPageState extends State<LoginPage> {
 
   // setelah buat enum LoginStatus, buat kondisi default
   LoginStatus _loginStatus = LoginStatus.notSignIn;
-  String statusRun,tokenStatus;
+  String? statusRun,tokenStatus;
+  SharedPreferences? sharedPreferences;
 
-  String username, password;
+  String? _testValue;
+
+  String username="", password="";
   final _key = new GlobalKey<FormState>();
 
   // membuat show hide password
@@ -59,26 +62,38 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  check() {
+  check() async {
     final form = _key.currentState;
 
     // jika formnya valid dan tidak ada yg ksong maka akan di save
-    if (form.validate()) {
-      form.save();
+    if (form!.validate()) {
+      form!.save();
       // setState(() {
       //   _loginStatus = LoginStatus.signIn;
       //   savePref(value, "197008281997031012", "MTk3MDA4MjgxOTk3MDMxMDEy","LUHUR RAHPINUJI, S.IP.","https://development.kebumenkab.go.id/siltapkin/2020/assets/images/ndak_jelas.png","32","Kabid Pengelolaan Data Elektronik","2146576612");
       // });
-      login();
+      // login();
+      ApiService login = new ApiService();
+      login.loginAplikasi(username,password);
 
-      // print("$username, $password");
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      setState(() {
+        String? valLogin = preferences.getString("namalogin");
+        if(valLogin != null){
+          _loginStatus = LoginStatus.signIn;
+          Fluttertoast.showToast(msg: "Berhasil Login!", toastLength: Toast.LENGTH_SHORT);
+        }else {
+          Fluttertoast.showToast(msg: "Login Gagal!", toastLength: Toast.LENGTH_SHORT);
+        }
+      });
+
     }
   }
 
   // membuat method untuk login ke db
   login() async {
     // untuk post wajib ada body properti
-    final response = await http.post(ApiService.baseUrlLogin, body: {
+    final response = await http.post(Uri.parse(ApiService.baseUrlLogin), body: {
       // sesuaikan dengan key yg sudah dibuat pada api
       "username":
       username, // key username kemudian nilai inputnya dari mana,  dari string username
@@ -135,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      value = preferences.getInt("value");
+      value = preferences.getString("value");
       tokenStatus = preferences.getString("tokenlogin");
       _loginStatus = value == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
     });
@@ -143,16 +158,16 @@ class _LoginPageState extends State<LoginPage> {
 
   signOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await kirimStatusLogout(preferences.getString("id_pns"));
+    await kirimStatusLogout(preferences.getString("id_pns")!);
     setState(() {
-      preferences.setInt("value", null);
-      preferences.setString("niplogin", null);
-      preferences.setString("tokenlogin", null);
-      preferences.setString("namalogin", null);
-      preferences.setString("fotoLogin", null);
-      preferences.setString("ideselon", null);
-      preferences.setString("jabatan", null);
-      preferences.setString("id_pns", null);
+      preferences.setInt("value", 0);
+      preferences.setString("niplogin", "");
+      preferences.setString("tokenlogin", "");
+      preferences.setString("namalogin", "");
+      preferences.setString("fotoLogin", "");
+      preferences.setString("ideselon", "");
+      preferences.setString("jabatan", "");
+      preferences.setString("id_pns", "");
       preferences.commit();
       // ketika signoutnya berhasil login harus notsignout
       _loginStatus = LoginStatus.notSignIn;
@@ -163,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
     Map<String, dynamic> inputMap = {
       'id_pns': id_pns,
     };
-    final response = await http.post(ApiService.baseStatusLogout,
+    final response = await http.post(Uri.parse(ApiService.baseStatusLogout),
       body: inputMap,
     );
     final data = jsonDecode(response.body);
@@ -300,13 +315,13 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.number,
                         autofocus: true,
 //                        initialValue: '197305241999032004/197008281997031012',
-                        initialValue:'197008281997031012',
+                        initialValue:'3301060106910005',
                         validator: (e) {
-                          if (e.isEmpty) {
+                          if (e!.isEmpty) {
                             return "Pastikan NIP Anda Benar";
                           }
                         },
-                        onSaved: (e) => username = e,
+                        onSaved: (e) => username = e!,
                         decoration: InputDecoration(
                           hintText: 'NIP',
                           contentPadding: EdgeInsets.fromLTRB(
@@ -321,10 +336,11 @@ class _LoginPageState extends State<LoginPage> {
                         autocorrect: false,
                         autofocus: false,
 //                        initialValue: '24-05-1973/28-08-1970',
+                        initialValue: 'imamkbm123',
                         //'28-08-1970',
                         //obscureText: true,
                         obscureText: _secureText,
-                        onSaved: (e) => password = e,
+                        onSaved: (e) => password = e!,
                         decoration: InputDecoration(
                             hintText: "Password",
                             contentPadding: EdgeInsets.fromLTRB(
@@ -361,7 +377,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         child: Text(
                           'Lupa password?',
                           style: TextStyle(color: Colors.black54),

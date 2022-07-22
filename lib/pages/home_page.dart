@@ -43,7 +43,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       tarikanToken = preferences.getString("tokenlogin");
     });
-    final response = await http.get(api.urlGetdataPribadi+tarikanToken);
+    final response = await http.get(Uri.parse(api.urlGetdataPribadi+tarikanToken));
     if(response.statusCode == 200){
       final data = jsonDecode(response.body);
       //final _daftarPekerjaan = data['data'];
@@ -69,11 +69,11 @@ class HomePageState extends State<HomePage> {
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      username = preferences.getString("niplogin");
-      nama = preferences.getString("namalogin");
-      linkfoto = preferences.getString("fotoLogin");
-      ideselon = preferences.getString("ideselon");
-      jabat = preferences.getString("jabatan");
+      username = preferences.getString("niplogin")!;
+      nama = preferences.getString("namalogin")!;
+      linkfoto = preferences.getString("fotoLogin")!;
+      ideselon = preferences.getString("ideselon")!;
+      jabat = preferences.getString("jabatan")!;
       if(ideselon=="21"||ideselon=="22"||ideselon=="31"||jabat.contains('Camat')||ideselon=="32"||ideselon=="41"||ideselon=="42"){
       }else{
         drawerItems.removeAt(2);

@@ -11,7 +11,7 @@ class DaftarPegawaiVerifikasi{
   String belumVerBlnIni;
   String menitSudah;
 
-  DaftarPegawaiVerifikasi({this.numb,this.idPns,this.idNipBaru,this.idNipLama,this.foto,this.namaPgawai,this.belumVerBlnIni,this.belumVerBlnLalu,this.menitSudah});
+  DaftarPegawaiVerifikasi({required this.numb,required this.idPns,required this.idNipBaru,required this.idNipLama,required this.foto,required this.namaPgawai,required this.belumVerBlnIni,required this.belumVerBlnLalu,required this.menitSudah});
   
   factory DaftarPegawaiVerifikasi.fromJson(Map<String, dynamic> map) {
     return DaftarPegawaiVerifikasi(

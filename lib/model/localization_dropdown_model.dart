@@ -4,7 +4,7 @@ class Localization {
   final List <SubPekerjaan> subpekerjaan;
   //DataPekerjaan nd = new DataPekerjaan();
 
-  Localization({this.pekerjaan, this.subpekerjaan});
+  Localization({required this.pekerjaan, required this.subpekerjaan});
 
   factory Localization.fromJson(Map<String, dynamic> json) {
     return Localization(
@@ -44,7 +44,7 @@ class SubPekerjaan {
   final String idPekerjaan;
 
 
-  SubPekerjaan({this.idSubPekerjaan, this.namaSubPekerjaan, this.standarWaktu,this.idPekerjaan});
+  SubPekerjaan({required this.idSubPekerjaan, required this.namaSubPekerjaan, required this.standarWaktu,required this.idPekerjaan});
 
   factory SubPekerjaan.fromJson(Map<String, dynamic> parsedJson){
 //    var rr=parsedJson['subpekerjaan'];
@@ -75,8 +75,8 @@ class DataPekerjaan {
   //final List<String> subPekerjaan;
 
   DataPekerjaan({
-    this.idPekerjaan,
-    this.namaPekerjaan
+    required this.idPekerjaan,
+    required this.namaPekerjaan
     //this.subPekerjaan
   });
 

@@ -15,7 +15,7 @@ class _FirstFragmentState extends State<FirstFragment>{
   var tarikanNamaAtasan, tarikanNipAtasan, tarikanJabatanAtasan, tarikanInstansiAtasan;
   String username="", nama="",tokenlogin="";
   var loading = false;
-  String url;
+  String? url;
 
   Future<Null> _fetchData()async{
     setState(() {
@@ -23,10 +23,10 @@ class _FirstFragmentState extends State<FirstFragment>{
     });
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      tokenlogin = preferences.getString("tokenlogin");
+      tokenlogin = preferences.getString("tokenlogin")!;
 
     });
-    final response = await http.get(api.urlGetdataPribadi+tokenlogin);
+    final response = await http.get(Uri.parse(api.urlGetdataPribadi+tokenlogin));
     if(response.statusCode == 200){
       final data = jsonDecode(response.body);
       //final _daftarPekerjaan = data['data'];
@@ -66,8 +66,8 @@ class _FirstFragmentState extends State<FirstFragment>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    TextStyle styleDashboard = Theme.of(context).textTheme.body1;
-    TextStyle styleTitle = Theme.of(context).textTheme.title;
+    TextStyle? styleDashboard = Theme.of(context).textTheme.bodyText1;
+    TextStyle? styleTitle = Theme.of(context).textTheme.subtitle1;
     return new Center(
       //child: new Text("Hello Fragment 1"),
       child: loading ? Center(child: CircularProgressIndicator())
@@ -79,11 +79,11 @@ class _FirstFragmentState extends State<FirstFragment>{
                     children: <Widget>[
                       new Row(
                         children: <Widget>[
-                          new Text("Nama",style: styleDashboard),
-                          SizedBox(width: 60.0,),
+                          new Text("Nama"),
+                          SizedBox(width: 55.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
-                          Flexible(child: new Text(tarikanNamaUser,style: styleDashboard,))
+                          Flexible(child: new Text(tarikanNamaUser,))
                         ],
                       ),
                       new Row(
@@ -91,7 +91,7 @@ class _FirstFragmentState extends State<FirstFragment>{
                           new Text("Pangkat/Gol"),
                           SizedBox(width: 15.0,),
                           new Text(": "),
-                          SizedBox(width: 15.0,),
+                          SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanPangkatUser))
                         ],
                       ),
@@ -122,21 +122,21 @@ class _FirstFragmentState extends State<FirstFragment>{
                   child: new Column(
                     children: <Widget>[
                       new Center(
-                        child: new Text("Data Atasan",style: styleTitle),
+                        child: new Text("Data Atasan",style: styleTitle,),
                       ),
                       new Row(
                         children: <Widget>[
-                          new Text("Nama",style: styleDashboard),
-                          SizedBox(width: 60.0,),
+                          new Text("Nama"),
+                          SizedBox(width: 55.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
-                          Flexible(child: new Text(tarikanNamaAtasan,style: styleDashboard,))
+                          Flexible(child: new Text(tarikanNamaAtasan,))
                         ],
                       ),
                       new Row(
                         children: <Widget>[
                           new Text("NIP"),
-                          SizedBox(width: 75.0,),
+                          SizedBox(width: 70.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanNipAtasan))

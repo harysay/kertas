@@ -23,7 +23,7 @@ abstract class Prefs {
 
   /// Last playing track id
   static final Pref<int> songIdIntNullable =
-      Pref<int>(key: 'song_id', defaultValue: null);
+      Pref<int>(key: 'song_id', defaultValue: null!);
 
   /// Last playing track id
   ///
@@ -91,8 +91,8 @@ abstract class Settings {
 /// Even if default value is null, you should specify it explicitly and give a pref variable "Nullable" postfix
 class Pref<T> {
   Pref({
-    @required this.key,
-    @required this.defaultValue,
+    required this.key,
+    required this.defaultValue,
   }) : assert(key != null) {
     /// Call this to check current pref value and set it to default, if it's null
     getPref();
@@ -107,7 +107,7 @@ class Pref<T> {
   /// @param [value] new pref value to set.
   ///
   /// @param [prefs] optional [SharedPreferences] instance.
-  Future<bool> setPref({T value, SharedPreferences prefs}) async {
+  Future<bool> setPref({T? value, SharedPreferences? prefs}) async {
     value ??= defaultValue;
     prefs ??= await SharedPreferences.getInstance();
 
@@ -132,7 +132,7 @@ class Pref<T> {
   /// If the current value is `null`, will return [defaultValue] call [setPref] to reset the pref to the [defaultValue].
   ///
   /// @param prefs optional [SharedPreferences] instance
-  Future<T> getPref([SharedPreferences prefs]) async {
+  Future<T> getPref([SharedPreferences? prefs]) async {
     prefs ??= await SharedPreferences.getInstance();
     // Convert type to string because [is] operator doesn't work
     final String strT = T.toString();

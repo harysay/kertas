@@ -1,9 +1,9 @@
 import 'package:kertas/model/daftar_aktivitas.dart';
 
 class DaftarAktivitasResponse{
-  String status;
-  String info;
-  List<DaftarAktivitas> data;
+  String? status;
+  String? info;
+  List<DaftarAktivitas>? data;
 
   DaftarAktivitasResponse({this.status,
     this.info,

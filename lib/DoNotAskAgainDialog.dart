@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:talkfootball/constants.dart';
 
 class DoNotAskAgainDialog extends StatefulWidget {
-  final String title, subTitle, positiveButtonText, negativeButtonText;
-  final Function onPositiveButtonClicked;
-  final String doNotAskAgainText;
-  final String dialogKeyName;
+  final String? title, subTitle, positiveButtonText, negativeButtonText;
+  final Function? onPositiveButtonClicked;
+  final String? doNotAskAgainText;
+  final String? dialogKeyName;
 
 
   DoNotAskAgainDialog(
@@ -28,29 +28,31 @@ class DoNotAskAgainDialog extends StatefulWidget {
 
 class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
   bool doNotAskAgain = false;
-  String kUpdateDialogKeyName;
+  String? kUpdateDialogKeyName;
 
   _updateDoNotShowAgain() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setBool(kUpdateDialogKeyName, false);
+    await sharedPreferences.setBool(kUpdateDialogKeyName!, false);
   }
 
   @override
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoAlertDialog(
-        title: Text(widget.title),
-        content: Text(widget.subTitle),
+        title: Text(widget.title!),
+        content: Text(widget.subTitle!),
         actions: <Widget>[
           CupertinoDialogAction(
             child: Text(
-              widget.positiveButtonText,
+              widget.positiveButtonText!,
             ),
-            onPressed: widget.onPositiveButtonClicked,
+            onPressed: (){
+              widget.onPositiveButtonClicked;
+            }
           ),
           CupertinoDialogAction(
             child: Text(
-              widget.doNotAskAgainText,
+              widget.doNotAskAgainText!,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -59,7 +61,7 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
           ),
           CupertinoDialogAction(
             child: Text(
-              widget.negativeButtonText,
+              widget.negativeButtonText!,
             ),
             onPressed: () => Navigator.pop(context),
           ),
@@ -68,14 +70,14 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
     }
     return AlertDialog(
       title: Text(
-        widget.title,
+        widget.title!,
         style: TextStyle(fontSize: 24),
       ),
       content: FittedBox(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(widget.subTitle),
+            Text(widget.subTitle!),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -86,7 +88,7 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
                     value: doNotAskAgain,
                     onChanged: (val) {
                       setState(() {
-                        doNotAskAgain = val;
+                        doNotAskAgain = val!;
                       });
                     },
                   ),
@@ -99,7 +101,7 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
                     });
                   },
                   child: Text(
-                    widget.doNotAskAgainText,
+                    widget.doNotAskAgainText!,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
@@ -109,18 +111,20 @@ class _DoNotAskAgainDialogState extends State<DoNotAskAgainDialog> {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text(widget.positiveButtonText),
-          onPressed: doNotAskAgain ? null : widget.onPositiveButtonClicked,
+        TextButton(
+          child: Text(widget.positiveButtonText!),
+          onPressed: () {
+            doNotAskAgain ? null : widget.onPositiveButtonClicked;
+          }
         ),
-        FlatButton(
+        TextButton(
           child: Text(
-            widget.negativeButtonText,
+            widget.negativeButtonText!,
             style: TextStyle(color: Colors.red),
           ),
           onPressed: () async {
             Navigator.pop(context);
-            if (doNotAskAgain) {
+            if (doNotAskAgain!) {
               _updateDoNotShowAgain();
             }
           },

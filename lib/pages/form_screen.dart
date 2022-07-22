@@ -14,13 +14,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
-import 'customTimePicker.dart';
-
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
 class FormScreen extends StatefulWidget {
-  List<DaftarAktivitas> daftarSudahAda;
-  DaftarAktivitas daftaraktivitas;
+  List<DaftarAktivitas>? daftarSudahAda;
+  DaftarAktivitas? daftaraktivitas;
   FormScreen({this.daftarSudahAda, this.daftaraktivitas});
 
   @override
@@ -28,8 +26,8 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-  Position _currentPosition;
-  String _currentAddress;
+  Position? _currentPosition;
+  String? _currentAddress;
   //DaftarPekerjaan repo = DaftarPekerjaan();
   var dataJson,_daftarPekerjaan,_daftarSubPekerjaan;
   //List<DaftarPekerjaan> semuaPekerjaan;
@@ -37,7 +35,7 @@ class _FormScreenState extends State<FormScreen> {
   String _timeMulai = "Belum diset";
   String _timeSelesai = "Belum diset";
 
-  String tokenlistaktivitas,tanggalAkSebelum,jamMulaiSebelum;
+  late String tokenlistaktivitas,tanggalAkSebelum,jamMulaiSebelum;
   TimeOfDay timeLimit = TimeOfDay(hour: 15, minute: 30);
   TimeOfDay startTime = TimeOfDay(hour: 7, minute: 30);
   TimeOfDay endTime = TimeOfDay(hour: 23, minute: 59);
@@ -46,12 +44,12 @@ class _FormScreenState extends State<FormScreen> {
   //List<String> _subPekerjaan;
   //String _selectedState = "Choose a state";
   //String _selectedLGA = "Choose ..";
-  String pekerjaanDefaultEdit;
-  List statesList = List();
-  List provincesList = List();
-  List tempList = List();
-  String _state;
-  String getIdSubPekerjaanValue;
+  String? pekerjaanDefaultEdit;
+  List? statesList = [];
+  List? provincesList = [];
+  List? tempList = [];
+  String? _state;
+  String? getIdSubPekerjaanValue;
   ApiService api = new ApiService();
 //  ApiService_pekerjaan api_pekerjaan = new ApiService_pekerjaan();
   //TextEditingController ctrlTanggalAktivitas = new TextEditingController();
@@ -59,12 +57,12 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController ctrlUraianPekerjaan = new TextEditingController();
 
   var loading = false;
-  Future<String> _populateDropdown() async {
+  Future<String?> _populateDropdown() async {
     await getPref();
     setState(() {
       loading = true;
     });
-    final getPlaces = await http.get(api.baseDaftarPekerjaan+tokenlistaktivitas);
+    final getPlaces = await http.get(Uri.parse(api.baseDaftarPekerjaan+tokenlistaktivitas!));
     if(getPlaces.statusCode == 200){
       final jsonResponse = json.decode(getPlaces.body);
 
@@ -94,50 +92,50 @@ class _FormScreenState extends State<FormScreen> {
     _populateDropdown();
     //Jika ada lemparan dari second_fragment (Edit) maka dilakukan berikut
     if (this.widget.daftaraktivitas != null) { //ngecek ada isinya nggak klo ada isinya berarti edit
-      _date = this.widget.daftaraktivitas.tglKinerja;
-      _timeMulai = this.widget.daftaraktivitas.jamMulai;
-      _timeSelesai = this.widget.daftaraktivitas.jamSelesai;
-      pekerjaanDefaultEdit = this.widget.daftaraktivitas.namaPekerjaan;
-      _state = this.widget.daftaraktivitas.idPekerjaan;
-      getIdSubPekerjaanValue = this.widget.daftaraktivitas.idSubPekerjaan;
+      _date = this.widget.daftaraktivitas!.tglKinerja!;
+      _timeMulai = this.widget.daftaraktivitas!.jamMulai!;
+      _timeSelesai = this.widget.daftaraktivitas!.jamSelesai!;
+      pekerjaanDefaultEdit = this.widget.daftaraktivitas!.namaPekerjaan;
+      _state = this.widget.daftaraktivitas!.idPekerjaan;
+      getIdSubPekerjaanValue = this.widget.daftaraktivitas!.idSubPekerjaan;
       //ctrlTanggalAktivitas.text = this.widget.daftaraktivitas.tglKinerja;
-      ctrlUraianPekerjaan.text = this.widget.daftaraktivitas.uraianPekerjaan;
+      ctrlUraianPekerjaan.text = this.widget.daftaraktivitas!.uraianPekerjaan!;
       //ctrlIdSubPekerjaan.text = this.widget.daftaraktivitas.idSubPekerjaan;
     }
     super.initState();
   }
 
-  Future<Null> fetchAktivitasSebelumnya()async{
-    setState(() {
-      loading = true;
-    });
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      tokenlistaktivitas = preferences.getString("tokenlogin");
-
-    });
-    final response = await http.get(api.getAllKontak(tokenlistaktivitas));
-    if(response.statusCode == 200){
-      var tagObjsJson = jsonDecode(response.body)['data'] as List;
-      List<DaftarAktivitas> tagObjs = tagObjsJson.map((tagJson) => DaftarAktivitas.fromJson(tagJson)).toList();
-
-      print(tagObjs);
-
-//      final data = jsonDecode(response.body);
-//      //final _daftarPekerjaan = data['data'];
-//      setState(() {
-//        tanggalAkSebelum = data["data"]["tgl_kinerja"];
-//        jamMulaiSebelum = data["data"]["jam_mulai"];
-//      });
-    }else{
-      Text("error bro");
-    }
-  }
+//   Future<Null> fetchAktivitasSebelumnya()async{
+//     setState(() {
+//       loading = true;
+//     });
+//     SharedPreferences preferences = await SharedPreferences.getInstance();
+//     setState(() {
+//       tokenlistaktivitas = preferences.getString("tokenlogin");
+//
+//     });
+//     final response = api.getAllKontak(tokenlistaktivitas!);
+//     if(response.statusCode == 200){
+//       var tagObjsJson = jsonDecode(response.body)['data'] as List;
+//       List<DaftarAktivitas> tagObjs = tagObjsJson.map((tagJson) => DaftarAktivitas.fromJson(tagJson)).toList();
+//
+//       print(tagObjs);
+//
+// //      final data = jsonDecode(response.body);
+// //      //final _daftarPekerjaan = data['data'];
+// //      setState(() {
+// //        tanggalAkSebelum = data["data"]["tgl_kinerja"];
+// //        jamMulaiSebelum = data["data"]["jam_mulai"];
+// //      });
+//     }else{
+//       Text("error bro");
+//     }
+//   }
 
   Future<Null> getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      tokenlistaktivitas = preferences.getString("tokenlogin");
+      tokenlistaktivitas = preferences.getString("tokenlogin")!;
     });
   }
 
@@ -167,10 +165,12 @@ class _FormScreenState extends State<FormScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          elevation: 4.0,
+                        TextButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.greenAccent)))
+                          ),
                           onPressed: () {
                             DatePicker.showDatePicker(context,
                                 theme: DatePickerTheme(
@@ -229,7 +229,7 @@ class _FormScreenState extends State<FormScreen> {
                               ],
                             ),
                           ),
-                          color: Colors.white,
+                          // color: Colors.white,
                         ),
                       ],
                     ),
@@ -243,7 +243,7 @@ class _FormScreenState extends State<FormScreen> {
                     child: new DropdownButton<String>(
                       isExpanded: true,
                       icon: const Icon(Icons.border_color),
-                      items: statesList.map((item) {
+                      items: statesList?.map((item) {
                         return new DropdownMenuItem<String>(
                           child: new Text(item.namaPekerjaan),// Text(item.standarWaktu),
                           value: item.idPekerjaan.toString(),
@@ -254,7 +254,7 @@ class _FormScreenState extends State<FormScreen> {
                           getIdSubPekerjaanValue = null;
                           _state = newVal;
                           tempList = provincesList
-                              .where((x) =>
+                              ?.where((x) =>
                           x.idPekerjaan.toString() == (_state.toString()))
                               .toList();
                         });
@@ -276,7 +276,7 @@ class _FormScreenState extends State<FormScreen> {
                     child: new DropdownButton<String>(
                       isExpanded: true,
                       icon: const Icon(Icons.access_time),
-                      items: tempList.map((item) {
+                      items: tempList?.map((item) {
                         return new DropdownMenuItem<String>(
                           child: new Text(item.standarWaktu),
                           value: item.idSubPekerjaan.toString(),
@@ -301,10 +301,12 @@ class _FormScreenState extends State<FormScreen> {
                     height: 15.0,
                   ),
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    elevation: 4.0,
+                  TextButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.greenAccent)))
+                    ),
                     onPressed: () {
                       DatePicker.showTimePicker(context,
                           theme: DatePickerTheme(containerHeight: 210.0,),
@@ -365,17 +367,19 @@ class _FormScreenState extends State<FormScreen> {
                         ],
                       ),
                     ),
-                    color: Colors.white,
+                    // color: Colors.white,
                   ),
                   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   SizedBox(
                     height: 3.0,
                   ),
                   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                  RaisedButton( //inputan jam selesai
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                    elevation: 4.0,
+                  TextButton( //inputan jam selesai
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.greenAccent)))
+                    ),
                     onPressed: (){
                       DatePicker.showTimePicker(context,
                           theme: DatePickerTheme(containerHeight: 210.0,),
@@ -436,7 +440,7 @@ class _FormScreenState extends State<FormScreen> {
                         ],
                       ),
                     ),
-                    color: Colors.white,
+                    // color: Colors.white,
                   ),
                   SizedBox(
                     height: 10,
@@ -461,8 +465,8 @@ class _FormScreenState extends State<FormScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          _currentPosition!=null? Text('Latitude: ${_currentPosition.latitude}') : Text('Menunggu Koordinat Lat'),
-                          _currentPosition!=null? Text('Longitude: ${_currentPosition.longitude}') : Text('Menunggu Koordinat Long'),
+                          _currentPosition!=null? Text('Latitude: ${_currentPosition?.latitude}') : Text('Menunggu Koordinat Lat'),
+                          _currentPosition!=null? Text('Longitude: ${_currentPosition?.longitude}') : Text('Menunggu Koordinat Long'),
                           _currentAddress!=null? Text('Alamat: ${_currentAddress}') : Text('Menunggu Alamat'),
                           // if (_currentPosition != null) Text(
                           //     "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
@@ -485,18 +489,18 @@ class _FormScreenState extends State<FormScreen> {
                       child: Row(
                         children: <Widget>[
                           Spacer(),
-                          RaisedButton(
+                          TextButton(
                             onPressed: () {
                               if (validateInput()) {
                                 DaftarAktivitas dataIn = new DaftarAktivitas(
                                     idDataKinerja: this.widget.daftaraktivitas != null
-                                        ? this.widget.daftaraktivitas.idDataKinerja
+                                        ? this.widget.daftaraktivitas!.idDataKinerja
                                         : "",
                                     tglKinerja: _date,
-                                    idSubPekerjaan: getIdSubPekerjaanValue,
+                                    idSubPekerjaan: getIdSubPekerjaanValue!,
                                     jamMulai: _timeMulai,
                                     jamSelesai: _timeSelesai,
-                                    uraianPekerjaan: ctrlUraianPekerjaan.text);
+                                    uraianPekerjaan: ctrlUraianPekerjaan.text,);
 //                                    if(compareJamTanggal(dataIn, dataIn.tglKinerja, dataIn.jamSelesai)==true){
 //                                      if(_date == "datedariserver" && _timeMulai<="timedariserver"){
 //
@@ -506,36 +510,31 @@ class _FormScreenState extends State<FormScreen> {
                                     DateTime selesai = dateFormat.parse(_timeSelesai);
                                     if(mulai.isAfter(selesai)) {
                                       // tolak
-                                      _scaffoldState.currentState
-                                          .showSnackBar(SnackBar(
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text("Jam selesai harus lebih dari jam mulai!"),
                                       ));
 
                                     }else{
                                       if (this.widget.daftaraktivitas != null) {
-                                        api.update(dataIn, tokenlistaktivitas)
+                                        api.update(dataIn, tokenlistaktivitas!)
                                             .then((result) {
                                           if (result=="true") {
                                             Navigator.pop(
-                                                _scaffoldState.currentState
-                                                    .context, true);
+                                                ScaffoldMessenger.of(context).context, true);
                                           } else {
-                                            _scaffoldState.currentState
-                                                .showSnackBar(SnackBar(
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                               content: Text(result),
                                             ));
                                           }
                                         });
                                       } else {
-                                        api.create(dataIn, tokenlistaktivitas)
+                                        api.create(dataIn, tokenlistaktivitas!)
                                             .then((result) {
                                           if (result=="true") {
                                             Navigator.pop(
-                                                _scaffoldState.currentState
-                                                    .context, true);
+                                                ScaffoldMessenger.of(context).context, true);
                                           } else {
-                                            _scaffoldState.currentState
-                                                .showSnackBar(SnackBar(
+                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                               content: Text(result),
                                             ));
                                             //                                            _scaffoldState.currentState
@@ -561,7 +560,7 @@ class _FormScreenState extends State<FormScreen> {
 
 
                               } else {
-                                _scaffoldState.currentState.showSnackBar(SnackBar(
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text("Data belum lengkap"),
                                 ));
                               }
@@ -570,7 +569,7 @@ class _FormScreenState extends State<FormScreen> {
                               widget.daftaraktivitas == null ? "Simpan" : "Ubah",
                               style: TextStyle(color: Colors.white),
                             ),
-                            color: Colors.orange[400],
+                            // color: Colors.orange[400],
                           ),
                         ],
                       )
@@ -590,7 +589,7 @@ class _FormScreenState extends State<FormScreen> {
         .then((Position position) {
       setState(() {
         _currentPosition = position;
-        _getAddressFromLatLng(_currentPosition.latitude.toDouble(),_currentPosition.longitude.toDouble());
+        _getAddressFromLatLng(_currentPosition!.latitude.toDouble(),_currentPosition!.longitude.toDouble());
       });
     }).catchError((e) {
       print(e);

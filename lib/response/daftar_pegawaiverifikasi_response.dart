@@ -1,8 +1,8 @@
 import 'package:kertas/model/daftar_pegawaiverifikasi.dart';
 class DaftarPegawaiVerifikasiResponse{
-  String status;
+  String? status;
   //String msg;
-  List<DaftarPegawaiVerifikasi> data;
+  List<DaftarPegawaiVerifikasi>? data;
 
   DaftarPegawaiVerifikasiResponse({this.status,
     //this.msg,

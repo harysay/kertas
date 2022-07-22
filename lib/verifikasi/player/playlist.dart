@@ -99,11 +99,11 @@ class Playlist {
 
   /// Returns song object by song id
   DaftarAktivitas getSongById(String id) {
-    return _songs.firstWhere((el) => el.idDataKinerja == id, orElse: () => null);
+    return _songs.firstWhere((el) => el.idDataKinerja == id, orElse: () => null!);
   }
 
   DaftarAktivitas getAktivitasById(String idKinerja){
-    return _songs.firstWhere((element) => element.idDataKinerja==idKinerja, orElse: () => null);
+    return _songs.firstWhere((element) => element.idDataKinerja==idKinerja, orElse: () => null!);
   }
 
   /// Returns song index in array by its id
@@ -115,37 +115,37 @@ class Playlist {
   int getNextSongId(int id) {
     final int nextSongIndex = getSongIndexById(id) + 1;
     if (nextSongIndex == -1) {
-      return null;
+      return null!;
     } else if (nextSongIndex >= length) {
-      return _songs[0].numb;
+      return _songs[0].numb!;
     }
-    return _songs[nextSongIndex].numb;
+    return _songs[nextSongIndex].numb!;
   }
 
   /// Returns prev song id
   int getPrevSongId(int id) {
     final int prevSongIndex = getSongIndexById(id) - 1;
     if (prevSongIndex == -2) {
-      return null;
+      return null!;
     } else if (prevSongIndex < 0) {
-      return _songs[length - 1].numb;
+      return _songs[length - 1].numb!;
     }
-    return _songs[prevSongIndex].numb;
+    return _songs[prevSongIndex].numb!;
   }
 
   // TODO: implement file size filter
-  void filter(FilterFeature feature, {Duration duration}) {
+  void filter(FilterFeature feature, {Duration? duration}) {
     if (feature == FilterFeature.duration) {
       assert(duration != null);
       _songs
-          .retainWhere((el) => Duration(milliseconds: el.numb) >= duration);
+          .retainWhere((el) => Duration(milliseconds: el.numb!) >= duration!);
     }
   }
 
   /// Will search each song in another playlist and remove it if won't find it.
   void compareAndRemoveObsolete(Playlist playlist) {
     _songs.removeWhere((song) {
-      return playlist.getSongById(song.idDataKinerja) == null;
+      return playlist.getSongById(song.idDataKinerja!) == null;
     });
   }
 }

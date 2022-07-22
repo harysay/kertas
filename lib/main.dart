@@ -19,7 +19,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-  String statusRun="1",tokenStatus;
+  String? statusRun="1",tokenStatus;
   Map<int, Color> color =
   {
     50:Color.fromRGBO(136,14,79, .1),
@@ -41,7 +41,7 @@ class _MyApp extends State<MyApp> {
   }
 
   void cekStatusRunning() async{
-    final response = await http.get(ApiService.baseStatusRunning);
+    final response = await http.get(Uri.parse(ApiService.baseStatusRunning));
     final stat = jsonDecode(response.body);
     setState(() {
       statusRun = stat['status'];
@@ -58,24 +58,49 @@ class _MyApp extends State<MyApp> {
         builder: (context,widget) => Navigator(
           onGenerateRoute: (settings) => MaterialPageRoute(
               builder: (context) => UpdateApp(
-                child: widget,
+                child: widget!,
               )
           ),
         ),
         title: 'E-Kertas',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: colorCustom,
-          fontFamily: 'Nunito',
+          brightness: Brightness.light,
           textTheme: TextTheme(
-            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            title: TextStyle(fontSize: 20.0,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline),
-            body1: TextStyle(fontSize: 18.0, fontFamily: 'Hind', height: 1.5),
-          ),
+            bodyText1: TextStyle(
+                fontSize: 18,
+                fontFamily: 'BreeSerif',
+                height: 1.5
+            ),
+            bodyText2: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Nunito',
+                height: 1.5
+            ),
+            subtitle1: TextStyle(
+              fontSize: 18,
+              fontFamily: 'Pasifico',
+            )
+          ).apply(
+            bodyColor: Colors.orange,
+            displayColor: Colors.blue,
+          )
         ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        // theme: ThemeData(
+        //   primarySwatch: colorCustom,
+        //   fontFamily: 'Nunito',
+        //   textTheme: TextTheme(
+        //     headline2: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        //     titleSmall: TextStyle(fontSize: 20.0,
+        //         fontStyle: FontStyle.italic,
+        //         fontWeight: FontWeight.bold,
+        //         decoration: TextDecoration.underline),
+        //     bodyText1: TextStyle(fontSize: 18.0, fontFamily: 'Hind', height: 1.5),
+        //   ),
+        // ),
         home: DoubleBack(
           message:"Tekan sekali lagi untuk keluar",
           child: LoginPage(),
@@ -93,12 +118,12 @@ class _MyApp extends State<MyApp> {
             primarySwatch: colorCustom,
             fontFamily: 'Nunito',
             textTheme: TextTheme(
-              headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              title: TextStyle(fontSize: 20.0,
+              headlineMedium: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+              titleMedium: TextStyle(fontSize: 20.0,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline),
-              body1: TextStyle(fontSize: 18.0, fontFamily: 'Hind', height: 1.5),
+              bodyText1: TextStyle(fontSize: 18.0, fontFamily: 'Hind', height: 1.5),
             ),
           ),
           home: DoubleBack(

@@ -34,12 +34,12 @@ class AboutFragment extends StatelessWidget {
                   ),
                   new Text(ApiService.versionBuildSekarang),
                   new Center(
-                    child: new RaisedButton(
-                      color: Colors.orangeAccent,
+                    child: new ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.orangeAccent, //background
+                        onPrimary: Colors.white, //foreground text color of button
+                      ),
                       onPressed: _launchURL,
-                      textColor: Colors.white,
-                      splashColor: Colors.grey,
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       child: new Text('Manual E-Kertas Android'),
                     ),
                   ),
