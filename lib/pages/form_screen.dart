@@ -3,6 +3,8 @@ import 'dart:convert';
 //import 'package:ekinerja2020/model/daftar_pekerjaan.dart';
 import 'package:flutter/material.dart';
 import 'package:kertas/model/daftar_aktivitas.dart';
+import 'package:kertas/model/data_tusi.dart';
+import 'package:kertas/response/daftarTusiResponse.dart';
 import 'package:kertas/service/ApiService.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart' as http;
@@ -46,10 +48,11 @@ class _FormScreenState extends State<FormScreen> {
   //String _selectedLGA = "Choose ..";
   String? pekerjaanDefaultEdit;
   List? statesList = [];
-  List? provincesList = [];
-  List? tempList = [];
+  List<DataTusi>? dat = [];
+  // List? provincesList = [];
+  // List? tempList = [];
   String? _state;
-  String? getIdSubPekerjaanValue;
+  // String? getIdSubPekerjaanValue;
   ApiService api = new ApiService();
 //  ApiService_pekerjaan api_pekerjaan = new ApiService_pekerjaan();
   //TextEditingController ctrlTanggalAktivitas = new TextEditingController();
@@ -57,26 +60,33 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController ctrlUraianPekerjaan = new TextEditingController();
 
   var loading = false;
-  Future<String?> _populateDropdown() async {
+  _populateDropdown() async {
     await getPref();
+    // setState(() {
+    //
+    // });
+    // final getDaftarTusi = await http.get(Uri.parse(api.baseDaftarPekerjaan+tokenlistaktivitas!));
+    // if(getDaftarTusi.statusCode == 200){
+    //   final jsonResponse = json.decode(getDaftarTusi.body);
+    //
+    //   Localization places = new Localization.fromJson(jsonResponse);
+    //
+    //
+    // }
     setState(() {
-      loading = true;
+      // if(getAllDataTusi() != null){
+      //   loading = true;
+      //   dat = getAllDataTusi();
+      //   statesList = dat;
+      // }
+      getAllDataTusi();
+
+      // provincesList = places.subpekerjaan;
+      // if (this.widget.daftaraktivitas != null) {
+      //   tempList = provincesList;
+      // }
+      // loading = false;
     });
-    final getPlaces = await http.get(Uri.parse(api.baseDaftarPekerjaan+tokenlistaktivitas!));
-    if(getPlaces.statusCode == 200){
-      final jsonResponse = json.decode(getPlaces.body);
-
-      Localization places = new Localization.fromJson(jsonResponse);
-
-      setState(() {
-        statesList = places.pekerjaan;
-        provincesList = places.subpekerjaan;
-        if (this.widget.daftaraktivitas != null) {
-          tempList = provincesList;
-        }
-        loading = false;
-      });
-    }
 
   }
   
@@ -89,17 +99,17 @@ class _FormScreenState extends State<FormScreen> {
     _getCurrentLocation();
 
     getPref();
+    // statesList = api.getAllDataTusi(tokenlistaktivitas).then((value) => null) as List?;
     _populateDropdown();
     //Jika ada lemparan dari second_fragment (Edit) maka dilakukan berikut
     if (this.widget.daftaraktivitas != null) { //ngecek ada isinya nggak klo ada isinya berarti edit
-      _date = this.widget.daftaraktivitas!.tglKinerja!;
+      _date = this.widget.daftaraktivitas!.tglPekerjaan!;
       _timeMulai = this.widget.daftaraktivitas!.jamMulai!;
       _timeSelesai = this.widget.daftaraktivitas!.jamSelesai!;
-      pekerjaanDefaultEdit = this.widget.daftaraktivitas!.namaPekerjaan;
-      _state = this.widget.daftaraktivitas!.idPekerjaan;
-      getIdSubPekerjaanValue = this.widget.daftaraktivitas!.idSubPekerjaan;
-      //ctrlTanggalAktivitas.text = this.widget.daftaraktivitas.tglKinerja;
-      ctrlUraianPekerjaan.text = this.widget.daftaraktivitas!.uraianPekerjaan!;
+      pekerjaanDefaultEdit = this.widget.daftaraktivitas!.namaTugasFungsi;
+      _state = this.widget.daftaraktivitas!.idTusi;
+      // getIdSubPekerjaanValue = this.widget.daftaraktivitas!.idSubPekerjaan;
+      ctrlUraianPekerjaan.text = this.widget.daftaraktivitas!.deskripsiPekerjaan!;
       //ctrlIdSubPekerjaan.text = this.widget.daftaraktivitas.idSubPekerjaan;
     }
     super.initState();
@@ -131,6 +141,30 @@ class _FormScreenState extends State<FormScreen> {
 //       Text("error bro");
 //     }
 //   }
+
+  DaftarTusiResponse tusiRes = new DaftarTusiResponse();
+  getAllDataTusi() async {
+    await getPref();
+    // loading = true;
+    //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
+    final response = await http.get(Uri.parse(api.baseUrl+"tusi/gettusi"),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": tokenlistaktivitas
+      },
+//      body: inputMap,
+    );
+    tusiRes = DaftarTusiResponse.fromJson(json.decode(response.body));
+    if (response.statusCode == 200) {
+      statesList = tusiRes.data;
+      loading = false;
+      return statesList;
+    } else {
+      return null;
+      loading = false;
+    }
+  }
 
   Future<Null> getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -245,18 +279,18 @@ class _FormScreenState extends State<FormScreen> {
                       icon: const Icon(Icons.border_color),
                       items: statesList?.map((item) {
                         return new DropdownMenuItem<String>(
-                          child: new Text(item.namaPekerjaan),// Text(item.standarWaktu),
-                          value: item.idPekerjaan.toString(),
+                          child: new Text(item.namaTusi),// Text(item.standarWaktu),
+                          value: item.idTusi.toString(),
                         );
                       }).toList(),
-                      onChanged: (newVal) {//newVal adalah idPekerjaan yang dipilih (nilai dari value)
+                      onChanged: (newVal) {//newVal adalah idTusi yang dipilih (nilai dari value)
                         setState(() {
-                          getIdSubPekerjaanValue = null;
+                          //getIdSubPekerjaanValue = null;
                           _state = newVal;
-                          tempList = provincesList
-                              ?.where((x) =>
-                          x.idPekerjaan.toString() == (_state.toString()))
-                              .toList();
+                          // tempList = provincesList
+                          //     ?.where((x) =>
+                          // x.idTusi.toString() == (_state.toString()))
+                          //     .toList();
                         });
 
                         // print(testingList.toString());
@@ -271,35 +305,35 @@ class _FormScreenState extends State<FormScreen> {
                       hint: Text('Pilih Aktivitas'),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 18.0, right: 18.0),
-                    child: new DropdownButton<String>(
-                      isExpanded: true,
-                      icon: const Icon(Icons.access_time),
-                      items: tempList?.map((item) {
-                        return new DropdownMenuItem<String>(
-                          child: new Text(item.standarWaktu),
-                          value: item.idSubPekerjaan.toString(),
-                        );
-                      }).toList(),
-                      onChanged: (newVal) {
-                        setState(() {
-                          getIdSubPekerjaanValue = newVal;
-                        });
-                      },
-//                      validator: (newVal) {
-//                        if (newVal?.isEmpty ?? true) {
-//                          return 'Standar Waktu Diperlukan';
-//                        }
-//                        return null;
-//                      },
-                      value: getIdSubPekerjaanValue,
-                      hint: Text('Pilih Standar Waktu'),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15.0,
-                  ),
+//                   Container(
+//                     margin: EdgeInsets.only(left: 18.0, right: 18.0),
+//                     child: new DropdownButton<String>(
+//                       isExpanded: true,
+//                       icon: const Icon(Icons.access_time),
+//                       items: tempList?.map((item) {
+//                         return new DropdownMenuItem<String>(
+//                           child: new Text(item.standarWaktu),
+//                           value: item.idSubPekerjaan.toString(),
+//                         );
+//                       }).toList(),
+//                       onChanged: (newVal) {
+//                         setState(() {
+//                           getIdSubPekerjaanValue = newVal;
+//                         });
+//                       },
+// //                      validator: (newVal) {
+// //                        if (newVal?.isEmpty ?? true) {
+// //                          return 'Standar Waktu Diperlukan';
+// //                        }
+// //                        return null;
+// //                      },
+//                       value: getIdSubPekerjaanValue,
+//                       hint: Text('Pilih Standar Waktu'),
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     height: 15.0,
+//                   ),
                   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   TextButton(
                     style: ButtonStyle(
@@ -493,14 +527,14 @@ class _FormScreenState extends State<FormScreen> {
                             onPressed: () {
                               if (validateInput()) {
                                 DaftarAktivitas dataIn = new DaftarAktivitas(
-                                    idDataKinerja: this.widget.daftaraktivitas != null
-                                        ? this.widget.daftaraktivitas!.idDataKinerja
+                                    idPekerjaan: this.widget.daftaraktivitas != null
+                                        ? this.widget.daftaraktivitas!.idPekerjaan
                                         : "",
-                                    tglKinerja: _date,
-                                    idSubPekerjaan: getIdSubPekerjaanValue!,
+                                    tglPekerjaan: _date,
+                                    // idSubPekerjaan: getIdSubPekerjaanValue!,
                                     jamMulai: _timeMulai,
                                     jamSelesai: _timeSelesai,
-                                    uraianPekerjaan: ctrlUraianPekerjaan.text,);
+                                    deskripsiPekerjaan: ctrlUraianPekerjaan.text,);
 //                                    if(compareJamTanggal(dataIn, dataIn.tglKinerja, dataIn.jamSelesai)==true){
 //                                      if(_date == "datedariserver" && _timeMulai<="timedariserver"){
 //
@@ -584,6 +618,7 @@ class _FormScreenState extends State<FormScreen> {
   }
 
   _getCurrentLocation() {
+    loading = true!;
     Geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
         .then((Position position) {
@@ -634,8 +669,7 @@ class _FormScreenState extends State<FormScreen> {
     if (_date == "Belum diset" ||
         ctrlUraianPekerjaan.text == "" ||
         _timeMulai == ""||
-        _timeSelesai == "" ||
-        getIdSubPekerjaanValue == null) {
+        _timeSelesai == "" ) {
       return false;
     } else {
       return true;

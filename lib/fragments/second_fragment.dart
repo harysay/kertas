@@ -21,7 +21,8 @@ class SecondFragment extends StatefulWidget {
 class _SecondFragmentState extends State<SecondFragment>{
   late DaftarAktivitas data;
   // late List<DaftarAktivitas> semuaAktivitas;
-  String tokenlistaktivitas="";
+  // String tokenlistaktivitas="";
+  // String userId="";
   _getRequests() async {
     // setState(() {});
   }
@@ -30,16 +31,17 @@ class _SecondFragmentState extends State<SecondFragment>{
   @override
   void initState() {
     // TODO: implement initState
-    getPref();
+    // getPref();
     super.initState();
   }
 
-  Future<Null> getPref() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      tokenlistaktivitas = preferences.getString("tokenlogin")!;
-    });
-  }
+  // Future<Null> getPref() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     tokenlistaktivitas = preferences.getString("tokenlogin")!;
+  //     userId = preferences.getString("userid")!;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _SecondFragmentState extends State<SecondFragment>{
     return Scaffold(
       key: _scaffoldState,
       body: FutureBuilder<List<DaftarAktivitas>?>(
-        future: api.getAllKontak(tokenlistaktivitas),
+        future: api.getAllAktivitasById(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             semuaAktivitas = snapshot.data!;
@@ -76,7 +78,7 @@ class _SecondFragmentState extends State<SecondFragment>{
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(aktivitas.tglKinerja!,style: TextStyle(fontSize: 14, color: Colors.black)),
+                              Text(aktivitas.tglPekerjaan!,style: TextStyle(fontSize: 14, color: Colors.black)),
                               Padding(
                                   padding: EdgeInsets.only(
                                       bottom: 5)),
@@ -100,11 +102,6 @@ class _SecondFragmentState extends State<SecondFragment>{
 //                                height: 50.0,
                                 ),
                                 onTap: () {
-//                          _showModalAlert(
-//                              'Peringatan',
-//                              'Apakah task ini akan di hapus?',
-//                              aktivitas.idSubPekerjaan
-//                          );
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -123,11 +120,7 @@ class _SecondFragmentState extends State<SecondFragment>{
                                               child: Text('Yes'),
                                               onPressed: () {
                                                 //_deleteTask(aktivitas.idSubPekerjaan);
-                                                api
-                                                    .delete(
-                                                    aktivitas
-                                                        .idDataKinerja!,
-                                                    tokenlistaktivitas!)
+                                                api.delete(aktivitas.idPekerjaan!)
                                                     .then((result) {
                                                   if (result != null) {
                                                     ScaffoldMessenger.of(
@@ -161,11 +154,10 @@ class _SecondFragmentState extends State<SecondFragment>{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Flexible(
-                                    child: new Text(
-                                        aktivitas.namaPekerjaan! +
-                                            " (" +
-                                            aktivitas.standarWaktu! +
-                                            ")",
+                                    child: new Text(aktivitas.namaTugasFungsi!,
+                                        overflow: TextOverflow.fade,
+                                        maxLines: 2,
+                                        softWrap: false,
                                         style: TextStyle(
                                             fontSize: 18, color: Colors.black)))
                               ]),
@@ -173,11 +165,7 @@ class _SecondFragmentState extends State<SecondFragment>{
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Flexible(
-                                    child: new Text(
-                                        aktivitas.uraianPekerjaan! +
-                                            " (" +
-                                            aktivitas.waktuMengerjakan! +
-                                            ")",
+                                    child: new Text(aktivitas.deskripsiPekerjaan!,
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.black)))
                                 //Text(aktivitas.uraianPekerjaan)

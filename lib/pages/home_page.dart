@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:kertas/service/ApiService.dart';
+import 'package:intl/intl.dart';
+
 
 class DrawerItem {
   String title;
@@ -31,29 +33,80 @@ class HomePageState extends State<HomePage> {
   var tarikanToken,tarikanLamaAktivitas,tarikanGrade;
   ApiService api = new ApiService();
   int _selectedDrawerIndex = 0;
-  String username = "", nama = "", linkfoto = "", ideselon="",jabat="";
+  String username = "", nama = "", linkfoto = "", akseslev ="",idPegawai="",tahunBlnSekarang = "";
   signOut() {
     setState(() {
       widget.signOut();
     });
   }
-
+  tahunBulanSekarang() {
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyyMM');
+    String tahunBlnSekarang = formatter.format(now);
+    return tahunBlnSekarang;
+  }
   Future<Null> _getLamaAktivitas()async{
+    // setState(() {
+    // ApiService lamamenit = new ApiService();
+    // tarikanLamaAktivitas  =  lamamenit.getLamaAktivitas(idPegawai, tahunBlnSekarang);
+    // });
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // setState(() {
+    //   tarikanToken = preferences.getString("tokenlogin");
+    // });
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      tarikanToken = preferences.getString("tokenlogin");
+      if(preferences.containsKey("niklogin")) {
+        idPegawai = preferences.getString("id")!;
+        username = preferences.getString("niklogin")!;
+        nama = preferences.getString("namalogin")!;
+        linkfoto = preferences.getString("fotoLogin")!;
+        akseslev = preferences.getString("akseslevel")!;
+        tarikanToken = preferences.getString("tokenlogin");
+        if (akseslev == "1" || akseslev == "2") {} else {
+          drawerItems.removeAt(2);
+        }
+      }else{
+        setState(() {
+          this.initState();
+        });
+      }
     });
-    final response = await http.get(Uri.parse(api.urlGetdataPribadi+tarikanToken));
+    ApiService lamamenit = new ApiService();
+    // var now = new DateTime.now();
+    // var formatter = new DateFormat('yyyyMM');
+    // tahunBlnSekarang = formatter.format(now);
+    final response = await http.get(Uri.parse(lamamenit.baseLamaAktivitas+idPegawai),
+     headers: {
+       "Accept": "application/json",
+       "Content-Type": "application/x-www-form-urlencoded",
+       "authorization": tarikanToken
+     },);
     if(response.statusCode == 200){
-      final data = jsonDecode(response.body);
-      //final _daftarPekerjaan = data['data'];
+      var data = jsonDecode(response.body);
       setState(() {
-        tarikanLamaAktivitas = data["data"]["lama_aktivitas"];
-        tarikanGrade = data["data"]["grade"];
+        tarikanLamaAktivitas = data["total_menit"];
       });
     }else{
-      Text("error bro");
+      Text("Error bro");
     }
+
+    //
+    // SharedPreferences preferences = await SharedPreferences.getInstance();
+    // setState(() {
+    //   tarikanToken = preferences.getString("tokenlogin");
+    // });
+    // final response = await http.get(Uri.parse(api.urlGetdataPribadi+"MTk3MDA4MjgxOTk3MDMxMDEy"));
+    // if(response.statusCode == 200){
+    //   final data = jsonDecode(response.body);
+    //   //final _daftarPekerjaan = data['data'];
+    //   setState(() {
+    //     tarikanLamaAktivitas = data["data"]["lama_aktivitas"];
+    //     tarikanGrade = data["data"]["grade"];
+    //   });
+    // }else{
+    //   Text("error bro");
+    // }
   }
 
   final drawerItems = [
@@ -66,30 +119,36 @@ class HomePageState extends State<HomePage> {
   ];
 
 
-  getPref() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      username = preferences.getString("niplogin")!;
-      nama = preferences.getString("namalogin")!;
-      linkfoto = preferences.getString("fotoLogin")!;
-      ideselon = preferences.getString("ideselon")!;
-      jabat = preferences.getString("jabatan")!;
-      if(ideselon=="21"||ideselon=="22"||ideselon=="31"||jabat.contains('Camat')||ideselon=="32"||ideselon=="41"||ideselon=="42"){
-      }else{
-        drawerItems.removeAt(2);
-      }
-    });
-  }
+  // getPref() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     if(preferences.containsKey("niklogin")) {
+  //       idPegawai = preferences.getString("id")!;
+  //       username = preferences.getString("niklogin")!;
+  //       nama = preferences.getString("namalogin")!;
+  //       linkfoto = preferences.getString("fotoLogin")!;
+  //       akseslev = preferences.getString("akseslevel")!;
+  //       tarikanToken = preferences.getString("tokenlogin");
+  //       if (akseslev == "1" || akseslev == "2") {} else {
+  //         drawerItems.removeAt(2);
+  //       }
+  //     }else{
+  //       setState(() {
+  //         this.initState();
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    getPref();
+    // getPref();
     _getLamaAktivitas();
   }
 
   _getDrawerItemWidget(int pos) {
-    if(ideselon=="21"||ideselon=="22"||ideselon=="31"||jabat.contains('Camat')||ideselon=="32"||ideselon=="41"||ideselon=="42"){
+    if(akseslev=="1"||akseslev=="2"){
       switch (pos) {
         case 0:
           return new FirstFragment();
@@ -165,8 +224,8 @@ class HomePageState extends State<HomePage> {
                       new Text(username),
                       Row(children: <Widget>[
                         Text('Telah bekerja: '),
-                        Text(tarikanLamaAktivitas??'tidak terdefinisi'),
-                        Text(' jam'),
+                        Text(tarikanLamaAktivitas??'Tidak terdefinisi'),
+                        Text(' mnt'),
                       ],),
                       // Row(children: <Widget>[
                       //   Text('Grade: '),

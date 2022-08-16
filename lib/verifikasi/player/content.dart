@@ -421,7 +421,7 @@ abstract class ContentControl {
         break;
       case SortFeature.title:
         state._playlists[PlaylistType.global]!.songs.sort(
-            (a, b) => a.namaPekerjaan!.toLowerCase().compareTo(b.namaPekerjaan!.toLowerCase()));
+            (a, b) => a.namaTugasFungsi!.toLowerCase().compareTo(b.namaTugasFungsi!.toLowerCase()));
         state._currentSortFeature = feature;
         Prefs.sortFeatureInt.setPref(value: 1);
         break;

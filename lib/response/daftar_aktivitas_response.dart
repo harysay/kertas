@@ -10,11 +10,11 @@ class DaftarAktivitasResponse{
     this.data});
 
   factory DaftarAktivitasResponse.fromJson(Map<String,dynamic>map){
-    var allAktivitas = map['data'] as List;
+    var allAktivitas = map['pekerjaan_data'] as List;
     List<DaftarAktivitas> aktivitasList = allAktivitas.map((i) => DaftarAktivitas.fromJson(i)).toList();
     return DaftarAktivitasResponse(
       status: map["status"],
-        info: map["info"],
+        info: map["message"],
         data: aktivitasList
     );
   }

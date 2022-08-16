@@ -99,11 +99,11 @@ class Playlist {
 
   /// Returns song object by song id
   DaftarAktivitas getSongById(String id) {
-    return _songs.firstWhere((el) => el.idDataKinerja == id, orElse: () => null!);
+    return _songs.firstWhere((el) => el.idPekerjaan == id, orElse: () => null!);
   }
 
   DaftarAktivitas getAktivitasById(String idKinerja){
-    return _songs.firstWhere((element) => element.idDataKinerja==idKinerja, orElse: () => null!);
+    return _songs.firstWhere((element) => element.idPekerjaan==idKinerja, orElse: () => null!);
   }
 
   /// Returns song index in array by its id
@@ -145,7 +145,7 @@ class Playlist {
   /// Will search each song in another playlist and remove it if won't find it.
   void compareAndRemoveObsolete(Playlist playlist) {
     _songs.removeWhere((song) {
-      return playlist.getSongById(song.idDataKinerja!) == null;
+      return playlist.getSongById(song.idPekerjaan!) == null;
     });
   }
 }

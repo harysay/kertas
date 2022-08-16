@@ -13,41 +13,57 @@ import 'package:kertas/service/ApiService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class ThirdFragment extends StatelessWidget {
-  // This widget is the root of your application.
-  Map<int, Color> color =
-  {
-    50:Color.fromRGBO(136,14,79, .1),
-    100:Color.fromRGBO(136,14,79, .2),
-    200:Color.fromRGBO(136,14,79, .3),
-    300:Color.fromRGBO(136,14,79, .4),
-    400:Color.fromRGBO(136,14,79, .5),
-    500:Color.fromRGBO(136,14,79, .6),
-    600:Color.fromRGBO(136,14,79, .7),
-    700:Color.fromRGBO(136,14,79, .8),
-    800:Color.fromRGBO(136,14,79, .9),
-    900:Color.fromRGBO(136,14,79, 1),
-  };
+class ThirdFragment extends StatefulWidget {
+  LaporanPage createState() => LaporanPage();
 
-  @override
-  Widget build(BuildContext context) {
-    MaterialColor colorCustom = MaterialColor(0xFF007bff, color);
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: colorCustom,
-      ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => RootPage(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-//        '/customData': (context) => CustomDataTable(),
-      },
-    );
-  }
+//   // This widget is the root of your application.
+//   Map<int, Color> color =
+//   {
+//     50:Color.fromRGBO(136,14,79, .1),
+//     100:Color.fromRGBO(136,14,79, .2),
+//     200:Color.fromRGBO(136,14,79, .3),
+//     300:Color.fromRGBO(136,14,79, .4),
+//     400:Color.fromRGBO(136,14,79, .5),
+//     500:Color.fromRGBO(136,14,79, .6),
+//     600:Color.fromRGBO(136,14,79, .7),
+//     700:Color.fromRGBO(136,14,79, .8),
+//     800:Color.fromRGBO(136,14,79, .9),
+//     900:Color.fromRGBO(136,14,79, 1),
+//   };
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     MaterialColor colorCustom = MaterialColor(0xFF007bff, color);
+//     return MaterialApp(
+//       theme: ThemeData(
+//         primarySwatch: colorCustom,
+//       ),
+//       debugShowCheckedModeBanner: false,
+//       initialRoute: '/',
+//       routes: {
+//         '/': (context) => RootPage(),
+//         // When navigating to the "/second" route, build the SecondScreen widget.
+// //        '/customData': (context) => CustomDataTable(),
+//       },
+//     );
+//   }
 }
 
-class RootPage extends StatelessWidget {
+class LaporanPage extends State<ThirdFragment> {
+  String tokenloginku="";
+  @override
+  void initState() {
+    // TODO: implement initState
+    getPref();
+    super.initState();
+  }
+  Future<Null> getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      tokenloginku = preferences.getString("tokenlogin")!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -89,7 +105,7 @@ class RootPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            BulanIni(),
+            BulanIni(tokenlogin: tokenloginku),
             BulanLalu(),
             BulanLusa(),
             Setahun(),
@@ -99,6 +115,7 @@ class RootPage extends StatelessWidget {
     );
   }
 }
+
 
 //class ThirdFragment extends StatefulWidget {
 //  @override

@@ -78,8 +78,9 @@ class _MyApp extends State<MyApp> {
                 height: 1.5
             ),
             subtitle1: TextStyle(
-              fontSize: 18,
-              fontFamily: 'Pasifico',
+              fontSize: 14,
+              fontFamily: 'Nunito',
+              // fontFamily: 'Pasifico',
             )
           ).apply(
             bodyColor: Colors.orange,

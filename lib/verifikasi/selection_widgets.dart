@@ -288,14 +288,14 @@ class _SelectableActivityTileState extends State<SelectableActivityTile>
   }
 
   void _select() {
-    widget.selectionController.selectItem(widget.listAktivitas.idDataKinerja!,widget.listAktivitas.tglKinerja!, widget.listAktivitas.waktuDiakui!);
+    widget.selectionController.selectItem(widget.listAktivitas.idPekerjaan!,widget.listAktivitas.tglPekerjaan!);
     //Playlist(widget.listAktivitas);
     _animationController!.forward();
   }
 
   // Performs unselect animation and calls [onSelected] and [notifyUnselection]
   void _unselect() {
-    widget.selectionController.unselectItem(widget.listAktivitas.idDataKinerja!,widget.listAktivitas.tglKinerja!, widget.listAktivitas.waktuDiakui!);
+    widget.selectionController.unselectItem(widget.listAktivitas.idPekerjaan!,widget.listAktivitas.tglPekerjaan!);
     _animationController!.reverse();
   }
 
@@ -315,7 +315,7 @@ class _SelectableActivityTileState extends State<SelectableActivityTile>
       selectedColor: Theme.of(context).textTheme.headlineMedium!.color,
       child: ListTile(
         subtitle: Text(
-          widget.listAktivitas.uraianPekerjaan!,
+          widget.listAktivitas.deskripsiPekerjaan!,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: 13.5,
@@ -331,7 +331,7 @@ class _SelectableActivityTileState extends State<SelectableActivityTile>
         onTap: _handleTap,
         onLongPress: _toggleSelection,
         title: Text(
-          widget.listAktivitas.namaPekerjaan!,
+          widget.listAktivitas.namaTugasFungsi!,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontSize: 15.0,
@@ -351,7 +351,7 @@ class _SelectableActivityTileState extends State<SelectableActivityTile>
                     child: Container(
                       width: 60.0,
                       height: 48.0,
-                      child: Text(widget.listAktivitas.tglKinerja!,style: TextStyle(fontSize: 14, color: Colors.black)),
+                      child: Text(widget.listAktivitas.tglPekerjaan!,style: TextStyle(fontSize: 14, color: Colors.black)),
                     ),
                   ),
                 ),

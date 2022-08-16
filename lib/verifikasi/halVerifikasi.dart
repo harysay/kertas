@@ -132,7 +132,7 @@ class _HalVerifState extends State<HalVerif> with TickerProviderStateMixin {
   }
 
   DaftarAktivitas getAktivitasById(String idKinerja){
-    return semuaAktivitas!.firstWhere((element) => element.idDataKinerja==idKinerja);
+    return semuaAktivitas!.firstWhere((element) => element.idPekerjaan==idKinerja);
   }
 
   void _handleSetuju() {
@@ -161,21 +161,21 @@ class _HalVerifState extends State<HalVerif> with TickerProviderStateMixin {
       acceptButton: DialogRaisedButton(
         text: "Setujui",
         onPressed: ()  {
-          selectionController!.close();
-          selectionController!.loadedAktivitas.forEach((element)async{
-           await api.setujuiAktivitas(tokenlogin, element.idDataKinerja!,element.waktuDiakui!,element.tglKinerja!);
-           setState(() {
-
-           });
-            //setujui(element.idDataKinerja,element.waktuDiakui,element.tglKinerja);
-          });
-//          Navigator.pop(context, "Berhasil Disetujui!");
-//          Navigator.pop(context);
-//          Navigator.pop(context, true);
-//          Navigator.pop(context, true);
-          ShowFunctions.showToast(msg: "Berhasil Disetujui!");
-          Navigator.of(context, rootNavigator: true).pop(true);
-//          Navigator.pop(_scaffoldState.currentState.context,true);
+//           selectionController!.close();
+//           selectionController!.loadedAktivitas.forEach((element)async{
+//            await api.setujuiAktivitas(tokenlogin, element.idPekerjaan!,element.waktuDiakui!,element.tglKinerja!);
+//            setState(() {
+//
+//            });
+//             //setujui(element.idDataKinerja,element.waktuDiakui,element.tglKinerja);
+//           });
+// //          Navigator.pop(context, "Berhasil Disetujui!");
+// //          Navigator.pop(context);
+// //          Navigator.pop(context, true);
+// //          Navigator.pop(context, true);
+//           ShowFunctions.showToast(msg: "Berhasil Disetujui!");
+//           Navigator.of(context, rootNavigator: true).pop(true);
+// //          Navigator.pop(_scaffoldState.currentState.context,true);
         },
       ),
       declineButton: DialogRaisedButton.decline(
@@ -216,7 +216,7 @@ class _HalVerifState extends State<HalVerif> with TickerProviderStateMixin {
           onPressed: () {
             selectionController!.close();
             selectionController!.loadedAktivitas.forEach((element)async{
-              await api.kembalikanAktivitas(tokenlogin, element.idDataKinerja!,"Ditolak",alasanKembaliCont.text);
+              await api.kembalikanAktivitas(tokenlogin, element.idPekerjaan!,"Ditolak",alasanKembaliCont.text);
               setState(() {
 
               });
@@ -286,7 +286,7 @@ class _HalVerifState extends State<HalVerif> with TickerProviderStateMixin {
           onPressed: () {
             selectionController!.close();
             selectionController!.loadedAktivitas.forEach((element)async{
-              await api.kembalikanAktivitas(tokenlogin, element.idDataKinerja!,"Dikembalikan",alasanKembaliCont.text);
+              await api.kembalikanAktivitas(tokenlogin, element.idPekerjaan!,"Dikembalikan",alasanKembaliCont.text);
               setState(() {
 
               });
@@ -552,7 +552,7 @@ class _AktivitasListTabState extends State<AktivitasListTab>
                   selectionController: widget.selectionController,
                   // Specify object key that can be changed to re-render song tile
                   key: ValueKey(index + widget.selectionController.switcher.value),
-                  selected: widget.selectionController.loadedAktivitas.contains(semuaAktivitas[index].idDataKinerja),
+                  selected: widget.selectionController.loadedAktivitas.contains(semuaAktivitas[index].idPekerjaan),
                   onTap: () {},
                 );
               },

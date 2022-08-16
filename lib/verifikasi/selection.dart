@@ -103,7 +103,7 @@ class SelectionController<T>
   }
 
   /// Adds an item to selection set and also notifies click listeners, in case if selection status mustn't change
-  void selectItem(String idDatakinerja, String tglKinerja, String waktuDiakui) {
+  void selectItem(String idDatakinerja, String tglKinerja) {
     if (notInSelection) {
       loadedAktivitas.clear();
     }
@@ -114,9 +114,9 @@ class SelectionController<T>
 //      'waktu_diakui': waktuDiakui
 //    };
     loadedAktivitas.add(DaftarAktivitas(
-      idDataKinerja: idDatakinerja,
-      tglKinerja: tglKinerja,
-      waktuDiakui: waktuDiakui
+      idPekerjaan: idDatakinerja,
+      tglPekerjaan: tglKinerja,
+      // waktuDiakui: waktuDiakui
     ));
     //Playlist(aktivitas: loadedAktivitas);
     //selectionSet.add(loadedAktivitas);
@@ -129,10 +129,10 @@ class SelectionController<T>
   }
 
   /// Removes an item to selection set and also notifies click listeners, in case if selection status mustn't change
-  void unselectItem(String idDatakinerja, String tglKiner, String waktuDiakui) {
+  void unselectItem(String idDatakinerja, String tglKiner) {
     _handleSetChange();
     notifyListeners();
-    loadedAktivitas.removeWhere((element) => element.idDataKinerja==idDatakinerja);
+    loadedAktivitas.removeWhere((element) => element.idPekerjaan==idDatakinerja);
 //    loadedAktivitas.remove(DaftarAktivitas(
 //      idDataKinerja: idDatakinerja,
 //      tglKinerja: tglKiner,

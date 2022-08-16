@@ -2,42 +2,44 @@ import 'dart:convert';
 import 'package:kertas/model/daftar_pegawaiverifikasi.dart';
 
 class DaftarAktivitas{
-  int? numb;
-  String? idDataKinerja;
   String? idPekerjaan;
-  String? tglKinerja;
-  String? namaPekerjaan;
-  String? uraianPekerjaan;
-  String? waktuMengerjakan;
-  String? standarWaktu;
-  String? waktuDiakui;
-  String? status;
-  String? idSubPekerjaan;
-  String? honorDiakui;
+  String? idOpd;
+  String? idUsers;
+  String? idTusi;
+  String? namaTugasFungsi;
+  String? deskripsiPekerjaan;
+  String? tglPekerjaan;
   String? jamMulai;
   String? jamSelesai;
-  String? namaSubPekerjaan;
+  String? waktuMengerjakan;
+  String? dataDukung;
+  String? dateCreated;
+  String? dateUpdated;
+  int? numb;
+  // String? idDataKinerja;
+  // String? namaPekerjaan;
+  // String? standarWaktu;
+  // String? waktuDiakui;
+  // String? namaSubPekerjaan;
   bool selected = false;
 
-  DaftarAktivitas({ this.numb,this.idDataKinerja,this.idPekerjaan,this.tglKinerja,this.namaPekerjaan,this.uraianPekerjaan,this.waktuMengerjakan,this.standarWaktu,this.waktuDiakui,this.status,this.idSubPekerjaan,this.honorDiakui,this.jamMulai,this.jamSelesai,this.namaSubPekerjaan});
+  DaftarAktivitas({this.idPekerjaan,this.idOpd,this.idUsers,this.idTusi,this.namaTugasFungsi,this.deskripsiPekerjaan,this.tglPekerjaan,this.jamMulai,this.jamSelesai,this.waktuMengerjakan,this.dataDukung,this.dateCreated,this.dateUpdated});
   
   factory DaftarAktivitas.fromJson(Map<String, dynamic> map) {
     return DaftarAktivitas(
-        numb: map["numb"],
-        idDataKinerja: map["id_data_kinerja"],
-        idPekerjaan: map["idpekerjaan"],
-        tglKinerja: map["tgl_kinerja"],
-        namaPekerjaan: map["nama_pekerjaan"],
-        uraianPekerjaan: map["uraian_pekerjaan"],
-        waktuMengerjakan: map["waktu_mengerjakan"],
-        standarWaktu: map["standar_waktu"],
-        waktuDiakui: map["waktu_diakui"],
-        status: map["status"],
-        idSubPekerjaan: map["idsubpekerjaan"],
-        honorDiakui: map["honor_diakui"],
-        jamMulai: map["jam_mulai"],
-        jamSelesai: map["jam_selesai"],
-        namaSubPekerjaan : map["namasubpekerjaan"],
+      idPekerjaan: map["id"],
+      idOpd: map["id_opd"],
+      idUsers: map["id_users"],
+      idTusi: map["id_tusi"],
+      namaTugasFungsi: map["tusi"],
+      deskripsiPekerjaan: map["deskripsi"],
+      tglPekerjaan: map["tanggal"],
+      jamMulai: map["waktu_mulai"],
+      jamSelesai: map["waktu_selesai"],
+      waktuMengerjakan: map["total_menit"],
+      dataDukung: map["data_dukung"],
+      dateCreated: map["date_created"],
+      dateUpdated: map["date_updated"],
     );
   }
 
