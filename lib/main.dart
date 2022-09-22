@@ -41,7 +41,8 @@ class _MyApp extends State<MyApp> {
   }
 
   void cekStatusRunning() async{
-    final response = await http.get(Uri.parse(ApiService.baseStatusRunning));
+    ApiService statusRuning = new ApiService();
+    final response = await http.get(Uri.parse(statusRuning.baseUrl+"app/status"));
     final stat = jsonDecode(response.body);
     setState(() {
       statusRun = stat['status'];
@@ -115,17 +116,27 @@ class _MyApp extends State<MyApp> {
           title: 'E-Kertas',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-//          primarySwatch: Colors.deepOrange,
-            primarySwatch: colorCustom,
-            fontFamily: 'Nunito',
-            textTheme: TextTheme(
-              headlineMedium: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-              titleMedium: TextStyle(fontSize: 20.0,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline),
-              bodyText1: TextStyle(fontSize: 18.0, fontFamily: 'Hind', height: 1.5),
-            ),
+              brightness: Brightness.light,
+              textTheme: TextTheme(
+                  bodyText1: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'BreeSerif',
+                      height: 1.5
+                  ),
+                  bodyText2: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Nunito',
+                      height: 1.5
+                  ),
+                  subtitle1: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Nunito',
+                    // fontFamily: 'Pasifico',
+                  )
+              ).apply(
+                bodyColor: Colors.orange,
+                displayColor: Colors.blue,
+              )
           ),
           home: DoubleBack(
             message:"Tekan sekali lagi untuk keluar",

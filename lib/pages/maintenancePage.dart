@@ -17,8 +17,8 @@ class MaintenancePage extends StatelessWidget {
           children: <Widget>[
             Image.asset(
               'assets/maintenancepage.png',
-              height: 450,
-              width: 250,
+              height: 320,
+              width: 150,
               fit: BoxFit.fitWidth,
             ),
             Container(

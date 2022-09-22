@@ -42,7 +42,8 @@ class _UpdateAppState extends State<UpdateApp> {
     //await Future.delayed(Duration(seconds: 5));
 
     //Add query here to get the minimum and latest app version
-    final response = await http.get(Uri.parse(ApiService.baseStatusRunning));
+    ApiService statusRuni = new ApiService();
+    final response = await http.get(Uri.parse(statusRuni.baseUrl+"app/status"));
     final stat = jsonDecode(response.body);
     setState(() {
       statusRun = stat['status'];

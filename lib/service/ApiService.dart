@@ -14,14 +14,15 @@ class ApiService {
   String username="", nama="",tokenlogin="", usernama="",passkode="",iduser="";
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
-  String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
+  // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
+  String baseUrl = "http://10.28.11.12/kertas_v2/index.php/api/";//laptope imam
+  // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
-  static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
+  // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
   static String baseTampilPegawaiVerifikasi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/verifikasi/";
   static String baseLaporan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/laporan/";
   static String baseStatusLogout = "https://development.kebumenkab.go.id/siltapkin/index.php/api/Login/proses_logout";
-  static String baseStatusRunning = "https://development.kebumenkab.go.id/kertas/index.php/api/app/status";
+  //static String baseStatusRunning = "https://development.kebumenkab.go.id/kertas/index.php/api/app/status";
   static String baseSudahverfiPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/verif_individu_bulanan?token=";
   String baseDaftarPekerjaan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/master_data/pekerjaan_lepas?token=";
   static String versionCodeSekarang = "9"; //harus sama dengan version di buildernya
@@ -38,7 +39,7 @@ class ApiService {
 
   Future<bool> loginAplikasi(String user, String kode) async {
     // untuk post wajib ada body properti
-    final response = await http.post(Uri.parse(ApiService.baseUrlLogin),
+    final response = await http.post(Uri.parse(baseUrl+"auth/login"),
         body: {
       // sesuaikan dengan key yg sudah dibuat pada api
       "username": user, // key username kemudian nilai inputnya dari mana,  dari string username
@@ -46,8 +47,9 @@ class ApiService {
     });
     // harus ada decode, karena setiap resul yg sudah di encode, wajib kita decode
     final data = jsonDecode(response.body);
-    String userId = data['id'];
-    String value = data['status'];
+    String userId = data['id_user'];
+    String status = data['status'];
+    String idOpd = data['id_opd'];
     String namaOpd = data['nama_opd'];
     String tokenLogin = data['token'];
     String nikLogin = data['username'];
@@ -56,28 +58,29 @@ class ApiService {
     String fotoLog = data['foto'];
     String akseslevel = data['access_level'];
     String idFormasi = data['id_formasi'];
-    String idPegawai = data['id'];
-    if (value == "success") {
+    // String idPegawai = data['id_user'];
+    if (status == "success") {
         // _loginStatus = LoginStatus.signIn;
-        await savePref(userId, value, tokenLogin, nikLogin,namaLogin,namaBidang,namaOpd,fotoLog,akseslevel,idFormasi,idPegawai);
+        await savePref(userId, status, tokenLogin, nikLogin,namaLogin,namaBidang,idOpd,namaOpd,fotoLog,akseslevel,idFormasi);
       return true;
     } else {
       return false;
     }
   }
-  savePref(String userId, String value,String tokenlog, String nik, String nama, String namBidang, String namOpd, String fotoLogin,String aksesLevel,String idformasi,String idpegawai) async {
+  savePref(String userId, String status,String tokenlog, String nik, String nama, String namBidang, String idOpd,String namOpd, String fotoLogin,String aksesLevel,String idformasi) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString("userid",  userId);
-      preferences.setString("value", value);
+      preferences.setString("status", status);
       preferences.setString("niklogin", nik);
       preferences.setString("tokenlogin", tokenlog);
       preferences.setString("namalogin", nama);
       preferences.setString("namabidang", namBidang);
+      preferences.setString("idopd", idOpd);
       preferences.setString("namaopd", namOpd);
       preferences.setString("fotoLogin", fotoLogin);
       preferences.setString("akseslevel", aksesLevel);
       preferences.setString("idformasi", idformasi);
-      preferences.setString("id", idpegawai);
+      // preferences.setString("id", idpegawai);
       preferences.commit();
   }
 
@@ -182,27 +185,27 @@ class ApiService {
     }
   }
 
-  DaftarTusiResponse tusiRes = new DaftarTusiResponse();
-  getAllDataTusi(String tokentusi) async {
-    await getPrefFromApi();
-    //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
-    final response = await http.get(Uri.parse(baseUrl+"tusi/gettusi"),
-     headers: {
-       "Accept": "application/json",
-       "Content-Type": "application/x-www-form-urlencoded",
-       "Authorization": tokenlogin
-     },
-//      body: inputMap,
-    );
-
-    tusiRes = DaftarTusiResponse.fromJson(json.decode(response.body));
-    if (response.statusCode == 200) {
-      List<DataTusi>? dat = tusiRes.data;
-      return dat;
-    } else {
-      return null;
-    }
-  }
+//   DaftarTusiResponse tusiRes = new DaftarTusiResponse();
+//   getAllDataTusi(String tokentusi) async {
+//     await getPrefFromApi();
+//     //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
+//     final response = await http.get(Uri.parse(baseUrl+"tusi/gettusibyformasi/3"),
+//      headers: {
+//        "Accept": "application/json",
+//        "Content-Type": "application/x-www-form-urlencoded",
+//        "Authorization": tokenlogin
+//      },
+// //      body: inputMap,
+//     );
+//
+//     tusiRes = DaftarTusiResponse.fromJson(json.decode(response.body));
+//     if (response.statusCode == 200) {
+//       List<DataTusi>? dat = tusiRes.data;
+//       return dat;
+//     } else {
+//       return null;
+//     }
+//   }
 //  static String username = 'user';
 //  static String password = 'demo';
 //  final String key = 'r4h4514';
@@ -257,45 +260,109 @@ class ApiService {
     }
   }
 
-  DaftarAktivitasResponse aktivitasCreate = new DaftarAktivitasResponse();
-  Future<String> create(DaftarAktivitas aktivitas, String tokenCreate) async {
-    //getPrefFromApi();
-    Map<String, dynamic> inputMap = {
-      //'DEMO-API-KEY': '$key',
-      'id_opd': aktivitas.idOpd,
-      'id_users': aktivitas.idUsers,
-      'id_tusi': aktivitas.idTusi,
-      'deskripsi': aktivitas.deskripsiPekerjaan,
-      'tanggal': aktivitas.tglPekerjaan,
-      //'nama_pekerjaan': aktivitas.namaPekerjaan,
-      //'waktu_mengerjakan': aktivitas.waktuMengerjakan,
-      //'standar_waktu': aktivitas.standarWaktu,
-      'jam_mulai': aktivitas.jamMulai,
-      'jam_selesai': aktivitas.jamSelesai,
+  DaftarAktivitasResponse pekerjaanCreate = new DaftarAktivitasResponse();
+  Future<String> uploadPhotos(DaftarAktivitas aktivitas,String path,String token) async {
+    Uri uri = Uri.parse(api.baseUrl+"pekerjaan/tambahpekerjaan");
+    http.MultipartRequest request = http.MultipartRequest('POST', uri);
+    request.headers['Authorization'] = token;
+    request.fields['id_opd'] = aktivitas.idOpd!;
+    request.fields['id_users'] = aktivitas.idUsers!;
+    request.fields['id_tusi'] = aktivitas.idTusi!;
+    request.fields['deskripsi'] = aktivitas.deskripsiPekerjaan!;
+    request.fields['tanggal'] = aktivitas.tglPekerjaan!;
+    request.fields['waktu_mulai'] = aktivitas.jamMulai!;
+    request.fields['waktu_selesai'] = aktivitas.jamSelesai!;
+    request.files.add(await http.MultipartFile.fromPath('data_dukung', path));
 
-      'data_dukung': aktivitas.dataDukung,
-      //'status': aktivitas.status
-    };
 
-    final response = await http.post(Uri.parse(
-      baseUrl+"simpanpekerjaan?token="+tokenCreate),
-      //headers: {"content-type": "application/json"},
+    http.StreamedResponse response = await request.send();
+    var responseBytes = await response.stream.toBytes();
+    var responseString = utf8.decode(responseBytes);
+    pekerjaanCreate = DaftarAktivitasResponse.fromJson(json.decode(responseString));
+    if (pekerjaanCreate.status == "success") {
+      return pekerjaanCreate.status!;
+    } else {
+      return pekerjaanCreate.info!;
+    }
+    // final data = jsonDecode(responseString);
+    // String status = data['status'];
+    // String pesanError = data['message'];
+    // if(status=="success") {
+    //   return status;
+    // }else{
+    //   return pesanError;
+    // }
+  }
+
+  DaftarAktivitasResponse pekerjaanUpdate = new DaftarAktivitasResponse();
+  Future<String> updatePekerjaan(DaftarAktivitas aktivitas,String path,String token) async {
+    Uri uri = Uri.parse(api.baseUrl+"pekerjaan/ubahpekerjaan");
+    http.MultipartRequest request = http.MultipartRequest('POST', uri);
+    request.headers['Authorization'] = token;
+    request.fields['id_pekerjaan'] = aktivitas.idPekerjaan!;
+    request.fields['id_tusi'] = aktivitas.idTusi!;
+    request.fields['deskripsi'] = aktivitas.deskripsiPekerjaan!;
+    request.files.add(await http.MultipartFile.fromPath('data_dukung', path));
+
+
+    http.StreamedResponse response = await request.send();
+    var responseBytes = await response.stream.toBytes();
+    var responseString = utf8.decode(responseBytes);
+    pekerjaanCreate = DaftarAktivitasResponse.fromJson(json.decode(responseString));
+    if (pekerjaanCreate.status == "success") {
+      return pekerjaanCreate.status!;
+    } else {
+      return pekerjaanCreate.info!;
+    }
+    // final data = jsonDecode(responseString);
+    // String status = data['status'];
+    // String pesanError = data['message'];
+    // if(status=="success") {
+    //   return status;
+    // }else{
+    //   return pesanError;
+    // }
+  }
+
+//create
+//   DaftarAktivitasResponse aktivitasCreate = new DaftarAktivitasResponse();
+//   Future<String> create(DaftarAktivitas aktivitas, String path, String tokenCreate) async {
+//     //getPrefFromApi();
+//     Map<String, dynamic> inputMap = {
+//       //'DEMO-API-KEY': '$key',
+//       'id_opd': aktivitas.idOpd,
+//       'id_users': aktivitas.idUsers,
+//       'id_tusi': aktivitas.idTusi,
+//       'deskripsi': aktivitas.deskripsiPekerjaan,
+//       'tanggal': aktivitas.tglPekerjaan,
+//       //'nama_pekerjaan': aktivitas.namaPekerjaan,
+//       //'waktu_mengerjakan': aktivitas.waktuMengerjakan,
+//       //'standar_waktu': aktivitas.standarWaktu,
+//       'waktu_mulai': aktivitas.jamMulai,
+//       'waktu_selesai': aktivitas.jamSelesai,
+//
+//       'data_dukung': aktivitas.dataDukung,
+//       //'status': aktivitas.status
+//     };
+//
+//     final response = await http.post(Uri.parse(baseUrl+"pekerjaan/tambahpekerjaan"),
+//       //headers: {"content-type": "application/json"},
 //      headers: {
 //        "Accept": "application/json",
 //        "Content-Type": "application/x-www-form-urlencoded",
-//        "authorization": basicAuth
+//        "authorization": tokenCreate
 //      },
-      body: inputMap
-    );
-
-    aktivitasCreate = DaftarAktivitasResponse.fromJson(json.decode(response.body));
-    //if (response.statusCode == 200) {
-    if (aktivitasCreate.status == "true") {
-      return aktivitasCreate.status!;
-    } else {
-      return aktivitasCreate.info!;
-    }
-  }
+//       body: inputMap
+//     );
+//
+//     aktivitasCreate = DaftarAktivitasResponse.fromJson(json.decode(response.body));
+//     //if (response.statusCode == 200) {
+//     if (aktivitasCreate.status == "true") {
+//       return aktivitasCreate.status!;
+//     } else {
+//       return aktivitasCreate.info!;
+//     }
+//   }
 
   DaftarAktivitasResponse aktivitasUpdate = new DaftarAktivitasResponse();
   Future<String> update(DaftarAktivitas aktivitas, String tokenUpdate) async {
@@ -303,15 +370,14 @@ class ApiService {
     Map<String, dynamic> inputMap = {
 //      'DEMO-API-KEY': '$key',
       //'numb': aktivitas.numb,
-      'id': aktivitas.idPekerjaan,
+      'id_pekerjaan': aktivitas.idPekerjaan,
       'id_tusi': aktivitas.idTusi,
       'deskripsi': aktivitas.deskripsiPekerjaan,
       'data_dukung': aktivitas.dataDukung,
       // 'jam_mulai': aktivitas.jamMulai,
       // 'jam_selesai': aktivitas.jamSelesai,
     };
-    final response = await http.post(Uri.parse(
-      baseUrl + "update?token="+tokenUpdate+"&id_data_kinerja="+aktivitas.idPekerjaan!),
+    final response = await http.post(Uri.parse(baseUrl + "update?token="+tokenUpdate+"&id_data_kinerja="+aktivitas.idPekerjaan!),
 //      headers: {
 //        "Accept": "application/json",
 //        "Content-Type": "application/x-www-form-urlencoded",
@@ -321,34 +387,34 @@ class ApiService {
     );
 
     aktivitasUpdate = DaftarAktivitasResponse.fromJson(json.decode(response.body));
-    if (aktivitasUpdate.status == "true") {
+    if (aktivitasUpdate.status == "success") {
       return aktivitasUpdate.status!;
     } else {
       return aktivitasUpdate.info!;
     }
   }
 
-  Future<bool> delete(String idDataKinerja) async {
+  Future<String?> delete(String idDataKinerja,String tokenDelete) async {
     await getPrefFromApi();
     Map<String, dynamic> inputMap = {
       //'DEMO-API-KEY': '$key',
-      'id_data_kinerja': idDataKinerja
+      'id_pekerjaan': idDataKinerja
     };
-    final response = await http.post(Uri.parse(baseUrl + "hapuspekerjaan?token="+tokenlogin),
-//      headers: {
-//        "Accept": "application/json",
-//        "Content-Type": "application/x-www-form-urlencoded",
-//        "authorization": basicAuth
-//      },
+    final response = await http.post(Uri.parse(baseUrl + "pekerjaan/hapuspekerjaan"),
+     headers: {
+       "Accept": "application/json",
+       "Content-Type": "application/x-www-form-urlencoded",
+       "authorization": tokenDelete
+     },
      body: inputMap,
     );
 
     aktivitasBelum = DaftarAktivitasResponse.fromJson(json.decode(response.body));
     //if (response.statusCode == 200) {
-    if (aktivitasBelum.status == "true") {
-      return true;
+    if (aktivitasBelum.status == "success") {
+      return aktivitasBelum.status;
     } else {
-      return false;
+      return aktivitasBelum.info;
     }
   }
 

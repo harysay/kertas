@@ -57,7 +57,7 @@ class HomePageState extends State<HomePage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       if(preferences.containsKey("niklogin")) {
-        idPegawai = preferences.getString("id")!;
+        idPegawai = preferences.getString("userid")!;
         username = preferences.getString("niklogin")!;
         nama = preferences.getString("namalogin")!;
         linkfoto = preferences.getString("fotoLogin")!;
@@ -76,7 +76,7 @@ class HomePageState extends State<HomePage> {
     // var now = new DateTime.now();
     // var formatter = new DateFormat('yyyyMM');
     // tahunBlnSekarang = formatter.format(now);
-    final response = await http.get(Uri.parse(lamamenit.baseLamaAktivitas+idPegawai),
+    final response = await http.get(Uri.parse(lamamenit.baseUrl+"pekerjaan/getpekerjaanbyhari/"+idPegawai),
      headers: {
        "Accept": "application/json",
        "Content-Type": "application/x-www-form-urlencoded",
@@ -84,9 +84,9 @@ class HomePageState extends State<HomePage> {
      },);
     if(response.statusCode == 200){
       var data = jsonDecode(response.body);
-      setState(() {
+      // setState(() {
         tarikanLamaAktivitas = data["total_menit"];
-      });
+      // });
     }else{
       Text("Error bro");
     }

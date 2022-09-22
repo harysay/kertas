@@ -27,7 +27,7 @@ class DaftarAktivitas{
   
   factory DaftarAktivitas.fromJson(Map<String, dynamic> map) {
     return DaftarAktivitas(
-      idPekerjaan: map["id"],
+      idPekerjaan: map["id_pekerjaan"],
       idOpd: map["id_opd"],
       idUsers: map["id_users"],
       idTusi: map["id_tusi"],

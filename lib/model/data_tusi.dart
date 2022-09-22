@@ -13,8 +13,8 @@ class DataTusi {
     // var dd = parsedJson['data'];
     //List<String> sss = dd.cast<String>();
     return DataTusi(
-      idTusi: parsedJson['id'],
-      namaTusi: parsedJson['nama_tusi'],
+      idTusi: parsedJson['id_tusi'],
+      namaTusi: parsedJson['nama'],
       //subPekerjaan: sss
     );
   }

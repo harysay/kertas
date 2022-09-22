@@ -45,7 +45,7 @@ class _FirstFragmentState extends State<FirstFragment>{
                       new Row(
                         children: <Widget>[
                           new Text("Nama"),
-                          SizedBox(width: 55.0,),
+                          SizedBox(width: 25.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanNamaUser!))
@@ -54,7 +54,7 @@ class _FirstFragmentState extends State<FirstFragment>{
                       new Row(
                         children: <Widget>[
                           new Text("NIK"),
-                          SizedBox(width: 15.0,),
+                          SizedBox(width: 40.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanNIKUser!))
@@ -63,7 +63,7 @@ class _FirstFragmentState extends State<FirstFragment>{
                       new Row(
                         children: <Widget>[
                           new Text("Bidang"),
-                          SizedBox(width: 42.0,),
+                          SizedBox(width: 20.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikNamaBidang!))
@@ -72,7 +72,7 @@ class _FirstFragmentState extends State<FirstFragment>{
                       new Row(
                         children: <Widget>[
                           new Text("Instansi"),
-                          SizedBox(width: 44.0,),
+                          SizedBox(width: 14.0,),
                           new Text(": "),
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanInstansiUser!))

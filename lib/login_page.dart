@@ -71,9 +71,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         String? valLogin = preferences.getString("namalogin");
         if(valLogin != null || valLogin != ""){
-          setState(() {
             _loginStatus = LoginStatus.signIn;
-          });
           Fluttertoast.showToast(msg: "Berhasil Login!", toastLength: Toast.LENGTH_SHORT);
         }else {
           Fluttertoast.showToast(msg: "Login Gagal!", toastLength: Toast.LENGTH_SHORT);
@@ -106,13 +104,13 @@ class _LoginPageState extends State<LoginPage> {
   //   });
   // }
 
-  var value;
+  // var value;
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       // value = preferences.getString("value");
       // tokenStatus = preferences.getString("tokenlogin");
-      _loginStatus = preferences.containsKey('value') ? LoginStatus.signIn : LoginStatus.notSignIn;
+      _loginStatus = preferences.containsKey("niklogin") ? LoginStatus.signIn : LoginStatus.notSignIn;
     });
   }
 
@@ -120,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     // await kirimStatusLogout(preferences.getString("id_pns")!);
     setState(() {
-      preferences.remove("value");
+      preferences.remove("status");
       preferences.remove("niklogin");
       preferences.remove("tokenlogin");
       preferences.remove("namalogin");
@@ -129,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
       preferences.remove("fotoLogin");
       preferences.remove("akseslevel");
       preferences.remove("idformasi");
-      preferences.remove("id");
+      preferences.remove("userid");
       preferences.commit();
       // ketika signoutnya berhasil login harus notsignout
       _loginStatus = LoginStatus.notSignIn;
@@ -207,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                         autocorrect: false,
                         autofocus: false,
 //                        initialValue: '24-05-1973/28-08-1970',
-                        initialValue: 'imamkbm123',
+                        initialValue: '12345678',
                         //'28-08-1970',
                         //obscureText: true,
                         obscureText: _secureText,
