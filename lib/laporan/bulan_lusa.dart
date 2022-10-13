@@ -30,7 +30,11 @@ class _BulanLusaState extends State<BulanLusa> {
       bulanLusa = 11;
       tahunIni = now.year-1;
     }
-    api.laporanInividu(tokenlogin!, bulanLusa.toString(), tahunIni.toString()).then((data){
+    String stringValue = bulanLusa.toString();
+    if(stringValue.length==1){
+      stringValue="0"+stringValue;
+    }
+    api.laporanInividu(stringValue, tahunIni.toString()).then((data){
       setState(() {
         json = data;
       });
@@ -42,11 +46,9 @@ class _BulanLusaState extends State<BulanLusa> {
     super.initState();
     setJson();
     columns = [
-      JsonTableColumn("tgl_kinerja", label: "Tanggal"),
-      JsonTableColumn("waktu_mengerjakan", label: "Menit Mengerjakan"),
-      JsonTableColumn("waktu_diakui", label: "Menit Diakui"),
-//      JsonTableColumn("honor_diakui", label: "Kinerja Diakui", defaultValue: "-"),
-      JsonTableColumn("status_kinerja", label: "Status"),
+      JsonTableColumn("tanggal", label: "Tanggal",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("lama_menit", label: "Jml Menit",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("deskripsi", label: "Deskripsi",defaultValue: "Tidak ada Data"),
     ];
   }
 
@@ -80,6 +82,17 @@ class _BulanLusaState extends State<BulanLusa> {
               showColumnToggle: true,
               allowRowHighlight: true,
               rowHighlightColor: Colors.yellow[500]?.withOpacity(0.7),
+              tableCellBuilder: (value) {
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                  decoration: BoxDecoration(border: Border.all(width: 0.5, color: Colors.grey.withOpacity(0.5))),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 14.0, color: Colors.grey[900]),
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: 16.0,

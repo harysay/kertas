@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:kertas/pages/maintenancePage.dart';
 import 'package:flutter/material.dart';
 import 'package:kertas/pages/home_page.dart';
@@ -6,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:kertas/service/ApiService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_info/device_info.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -114,6 +116,28 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  getVersionPerangkat() async{
+    if (Platform.isAndroid) {
+      var androidInfo = await DeviceInfoPlugin().androidInfo;
+      var release = androidInfo.version.release;
+      var sdkInt = androidInfo.version.sdkInt;
+      var manufacturer = androidInfo.manufacturer;
+      var model = androidInfo.model;
+      print('Android $release (SDK $sdkInt), $manufacturer $model');
+      // Android 9 (SDK 28), Xiaomi Redmi Note 7
+    }
+
+    if (Platform.isIOS) {
+      var iosInfo = await DeviceInfoPlugin().iosInfo;
+      var systemName = iosInfo.systemName;
+      var version = iosInfo.systemVersion;
+      var name = iosInfo.name;
+      var model = iosInfo.model;
+      print('$systemName $version, $name $model');
+      // iOS 13.1, iPhone 11 Pro Max iPhone
+    }
+  }
+
   signOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     // await kirimStatusLogout(preferences.getString("id_pns")!);
@@ -157,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     getPref();
+    getVersionPerangkat();
 //    cekStatusRunning();
   }
 

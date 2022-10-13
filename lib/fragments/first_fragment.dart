@@ -29,6 +29,9 @@ class _FirstFragmentState extends State<FirstFragment>{
     super.initState();
     getPref();
   }
+  _checkIn() async {
+
+  }
 
 
   @override
@@ -77,7 +80,49 @@ class _FirstFragmentState extends State<FirstFragment>{
                           SizedBox(width: 10.0,),
                           Flexible(child: new Text(tarikanInstansiUser!))
                         ],
-                      )
+                      ),
+
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(children: [
+                            InkWell(
+                              onTap: () {
+                                _checkIn;
+                              }, // Image tapped
+                              splashColor: Colors.white10, // Splash color over image
+                              child: Ink.image(
+                                fit: BoxFit.cover, // Fixes border issues
+                                width: 90,
+                                height: 90,
+                                image: AssetImage(
+                                  'assets/finger_green.png',
+                                ),
+                              ),
+                            ),
+                            new Text("Check In"),
+                          ]),
+                          Column(children: [
+                            InkWell(
+                              onTap: () {
+                                _checkIn;
+                              }, // Image tapped
+                              splashColor: Colors.white10, // Splash color over image
+                              child: Ink.image(
+                                fit: BoxFit.cover, // Fixes border issues
+                                width: 90,
+                                height: 90,
+                                image: AssetImage(
+                                  'assets/finger_red.png',
+                                ),
+                              ),
+                            ),
+                            new Text("Check Out"),
+                          ]),
+
+
+                        ],
+                      ),
                     ],
                   )
               ),
@@ -128,6 +173,7 @@ class _FirstFragmentState extends State<FirstFragment>{
               //       ],
               //     )
               // )
+
             ],
           ),
     );

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:kertas/model/daftar_aktivitas.dart';
 import 'package:kertas/verifikasi/halVerifikasi.dart';
 import 'package:kertas/verifikasi/splash/list_tile_splash.dart';
@@ -23,6 +25,7 @@ class _SecondFragmentState extends State<SecondFragment>{
   // late List<DaftarAktivitas> semuaAktivitas;
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
   String tokenlistaktivitas="";
+  List<DaftarAktivitas> semuaAktivitas = [];
   // String userId="";
   _getRequests() async {
     setState(() {});
@@ -102,11 +105,22 @@ class _SecondFragmentState extends State<SecondFragment>{
     );
   }
 
+  Future refreshData() async {
+    // semuaAktivitas.clear();
+    // await Future.delayed(Duration(seconds: 2));
+    // for (var index = 0; index < 10; index++) {
+    //   var nama = 'User ${index + 1}';
+    //   var nomor = Random().nextInt(100);
+    //   semuaAktivitas.add(User(nama, nomor));
+    // }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     // ApiService api = ApiService();
-    List<DaftarAktivitas> semuaAktivitas = [];
+
     return Scaffold(
       key: _scaffoldState,
       body: FutureBuilder<List<DaftarAktivitas>?>(
@@ -122,7 +136,9 @@ class _SecondFragmentState extends State<SecondFragment>{
                 ),
               );
             } else {
-              return ListView.builder(
+              return RefreshIndicator(
+                  onRefresh: refreshData,
+                  child: ListView.builder(
                 itemExtent: 100,
                 itemCount: semuaAktivitas.length,
                 itemBuilder: (context, index) {
@@ -145,9 +161,9 @@ class _SecondFragmentState extends State<SecondFragment>{
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(aktivitas.tglPekerjaan!,style: TextStyle(fontSize: 14, color: Colors.black)),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            bottom: 5)), //atur jarak antar InkWell
+                                    // Padding(
+                                    //     padding: EdgeInsets.only(
+                                    //         bottom: 2)), //atur jarak antar InkWell
                                     InkWell(
 //                              child:  Icon(Icons.edit, size: 20,),
                                       child: new Container(
@@ -165,7 +181,7 @@ class _SecondFragmentState extends State<SecondFragment>{
 //                                                 spreadRadius: 1),
 //                                           ],
 //                                         ),
-                                        height: 20,
+                                        height: 18,
 //                                width: 50.0,
 //                                height: 50.0,
                                       ),
@@ -316,6 +332,17 @@ class _SecondFragmentState extends State<SecondFragment>{
                                             });
                                       },
                                     ),
+                                    InkWell(
+                                        child: new Container(
+                                          child: Icon(
+                                            Icons.arrow_back_sharp,
+                                            size: 20,
+                                          ),
+                                          height: 10,
+//                                width: 50.0,
+//                                height: 50.0,
+                                        )
+                                    )
                                   ],
                                 ),
                               ),
@@ -421,8 +448,9 @@ class _SecondFragmentState extends State<SecondFragment>{
                   );
 
                 },
-              );
+              ));
             }
+
           }
           return Center(
             child: CircularProgressIndicator(),

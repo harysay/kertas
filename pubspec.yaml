@@ -48,6 +48,7 @@ dependencies:
   flutter_launcher_icons: 0.9.0
   catcher: 0.6.9
   camera: 0.10.0
+  device_info: 2.0.3
 
 flutter_icons:
   image_path: "assets/lg.png"
@@ -78,6 +79,9 @@ flutter:
     - assets/user.jpg
     - assets/maintenancepage.png
     - assets/kominfo.png
+    - assets/finger_green.png
+    - assets/finger_red.png
+    - assets/finger_transparant.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

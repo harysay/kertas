@@ -55,11 +55,11 @@ class _BulanIniState extends State<BulanIni> {
     //json = api.jsonku;
     //json = api.laporanInividu(tokenlogin, "03", "2018");
     columns = [
-      JsonTableColumn("name", label: "Tanggal",defaultValue: "Tidak ada Data"),
-      JsonTableColumn("email", label: "Menit Mengerjakan",defaultValue: "Tidak ada Data"),
-      JsonTableColumn("age", label: "Menit Diakui",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("tanggal", label: "Tanggal",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("lama_menit", label: "Jml Menit",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("deskripsi", label: "Deskripsi",defaultValue: "Tidak ada Data"),
 //      JsonTableColumn("honor_diakui", label: "Kinerja Diakui", defaultValue: "-"),
-      JsonTableColumn("DOB", label: "Status",defaultValue: "Tidak ada Data"),
+//       JsonTableColumn("DOB", label: "Status",defaultValue: "Tidak ada Data"),
     ];
 //     columns = [
 //       JsonTableColumn("tgl_kinerja", label: "Tanggal"),
@@ -81,8 +81,9 @@ class _BulanIniState extends State<BulanIni> {
   Widget build(BuildContext context) {
    // var json = jsonDecode(jsonSample);
     DateTime now = new DateTime.now();
+    String bulanIni = DateFormat('MM').format(now);
     return FutureBuilder(
-        future: api.laporanInividu(widget.tokenlogin!, now.month.toString(), now.year.toString()),
+        future: api.laporanInividu(bulanIni, now.year.toString()),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Column(

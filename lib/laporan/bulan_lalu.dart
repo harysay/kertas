@@ -34,7 +34,12 @@ class _BulanLalu extends State<BulanLalu> {
       bulanLalu = 12;
       tahunIni = now.year-1;
     }
-    api.laporanInividu(tokenlogin!, bulanLalu.toString(), tahunIni.toString()).then((data){
+    String stringValue = bulanLalu.toString();
+    if(stringValue.length==1){
+      stringValue="0"+stringValue;
+    }
+    // String bulanKemarin = DateFormat('MM').format(bulanLalu.le);
+    api.laporanInividu(stringValue, tahunIni.toString()).then((data){
       setState(() {
         json = data;
       });
@@ -62,11 +67,9 @@ class _BulanLalu extends State<BulanLalu> {
     //json = api.jsonku;
     //json = api.laporanInividu(tokenlogin, "03", "2018");
     columns = [
-      JsonTableColumn("tgl_kinerja", label: "Tanggal"),
-      JsonTableColumn("waktu_mengerjakan", label: "Menit Mengerjakan"),
-      JsonTableColumn("waktu_diakui", label: "Menit Diakui"),
-//      JsonTableColumn("honor_diakui", label: "Kinerja Diakui", defaultValue: "-"),
-      JsonTableColumn("status_kinerja", label: "Status"),
+      JsonTableColumn("tanggal", label: "Tanggal",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("lama_menit", label: "Jml Menit",defaultValue: "Tidak ada Data"),
+      JsonTableColumn("deskripsi", label: "Deskripsi",defaultValue: "Tidak ada Data"),
     ];
 //    columns = [
 //      JsonTableColumn("name", label: "Name"),

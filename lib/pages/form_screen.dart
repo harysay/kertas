@@ -78,7 +78,7 @@ class _FormScreenState extends State<FormScreen> {
   var loading = false;
   String? gambarPath="";
   _populateDropdown() async {
-    await getPref();
+    // await getPref();
     // setState(() {
     //
     // });
@@ -90,20 +90,43 @@ class _FormScreenState extends State<FormScreen> {
     //
     //
     // }
-    setState(() {
+    // setState(() {
       // if(getAllDataTusi() != null){
       //   loading = true;
       //   dat = getAllDataTusi();
       //   statesList = dat;
       // }
-      getAllDataTusi();
+      await getAllDataTusi();
+      if (this.widget.daftaraktivitas != null) { //ngecek ada isinya nggak klo ada isinya berarti edit
+        _date = this.widget.daftaraktivitas!.tglPekerjaan!;
+        _timeMulai = this.widget.daftaraktivitas!.jamMulai!;
+        _timeSelesai = this.widget.daftaraktivitas!.jamSelesai!;
+        pekerjaanDefaultEdit = this.widget.daftaraktivitas!.namaTugasFungsi;
+        _state = this.widget.daftaraktivitas!.idTusi;
 
+        //gambarPath = (this.widget.daftaraktivitas!.dataDukung!.contains("http") ? _fileFromImageUrl().toString():this.widget.daftaraktivitas!.dataDukung) as String?;
+        await _fileFromImageUrl();
+        // getIdSubPekerjaanValue = this.widget.daftaraktivitas!.idSubPekerjaan;
+        ctrlUraianPekerjaan.text = this.widget.daftaraktivitas!.deskripsiPekerjaan!;
+        //ctrlIdSubPekerjaan.text = this.widget.daftaraktivitas.idSubPekerjaan;
+      }
+      availableCameras().then((cameras) {
+        final camera = cameras
+            .where((camera) => camera.lensDirection == CameraLensDirection.back)
+            .toList()
+            .first;
+        setState(() {
+          _cameraDescription = camera;
+        });
+      }).catchError((err) {
+        print(err);
+      });
       // provincesList = places.subpekerjaan;
       // if (this.widget.daftaraktivitas != null) {
       //   tempList = provincesList;
       // }
       // loading = false;
-    });
+    // });
 
   }
 
@@ -146,36 +169,13 @@ class _FormScreenState extends State<FormScreen> {
     //DaftarPekerjaan pekerjaan = semuaPekerjaan[]
     //List<String> getPekerjaan() => _list.map((map) => DaftarPekerjaan.fromJson(map)).map(item) =>ite
     //_fetchData();
-    _getCurrentLocation();
+    // _getCurrentLocation();
 
     //getPref();
     // statesList = api.getAllDataTusi(tokenlistaktivitas).then((value) => null) as List?;
     _populateDropdown();
     //Jika ada lemparan dari second_fragment (Edit) maka dilakukan berikut
-    if (this.widget.daftaraktivitas != null) { //ngecek ada isinya nggak klo ada isinya berarti edit
-      _date = this.widget.daftaraktivitas!.tglPekerjaan!;
-      _timeMulai = this.widget.daftaraktivitas!.jamMulai!;
-      _timeSelesai = this.widget.daftaraktivitas!.jamSelesai!;
-      pekerjaanDefaultEdit = this.widget.daftaraktivitas!.namaTugasFungsi;
-      _state = this.widget.daftaraktivitas!.idTusi;
 
-      //gambarPath = (this.widget.daftaraktivitas!.dataDukung!.contains("http") ? _fileFromImageUrl().toString():this.widget.daftaraktivitas!.dataDukung) as String?;
-      _fileFromImageUrl();
-      // getIdSubPekerjaanValue = this.widget.daftaraktivitas!.idSubPekerjaan;
-      ctrlUraianPekerjaan.text = this.widget.daftaraktivitas!.deskripsiPekerjaan!;
-      //ctrlIdSubPekerjaan.text = this.widget.daftaraktivitas.idSubPekerjaan;
-    }
-    availableCameras().then((cameras) {
-      final camera = cameras
-          .where((camera) => camera.lensDirection == CameraLensDirection.back)
-          .toList()
-          .first;
-      setState(() {
-        _cameraDescription = camera;
-      });
-    }).catchError((err) {
-      print(err);
-    });
     super.initState();
   }
 
@@ -628,28 +628,28 @@ class _FormScreenState extends State<FormScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                      margin: EdgeInsets.only(left: 18.0, right: 18.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _currentPosition!=null? Text('Latitude: ${_currentPosition?.latitude}') : Text('Menunggu Koordinat Lat'),
-                          _currentPosition!=null? Text('Longitude: ${_currentPosition?.longitude}') : Text('Menunggu Koordinat Long'),
-                          _currentAddress!=null? Text('Alamat: ${_currentAddress}') : Text('Menunggu Alamat'),
-                          // if (_currentPosition != null) Text(
-                          //     "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
-                          // ),
-                          // Text("LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
-                          // FlatButton(
-                          //   child: Text("Get location"),
-                          //   onPressed: () {
-                          //     _getCurrentLocation();
-                          //   },
-                          // ),
-                        ],
-                      ),
-                  ),
+                  // Container(
+                  //     margin: EdgeInsets.only(left: 18.0, right: 18.0),
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: <Widget>[
+                  //         _currentPosition!=null? Text('Latitude: ${_currentPosition?.latitude}') : Text('Menunggu Koordinat Lat'),
+                  //         _currentPosition!=null? Text('Longitude: ${_currentPosition?.longitude}') : Text('Menunggu Koordinat Long'),
+                  //         _currentAddress!=null? Text('Alamat: ${_currentAddress}') : Text('Menunggu Alamat'),
+                  //         // if (_currentPosition != null) Text(
+                  //         //     "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
+                  //         // ),
+                  //         // Text("LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
+                  //         // FlatButton(
+                  //         //   child: Text("Get location"),
+                  //         //   onPressed: () {
+                  //         //     _getCurrentLocation();
+                  //         //   },
+                  //         // ),
+                  //       ],
+                  //     ),
+                  // ),
                   SizedBox(
                     height: 10,
                   ),

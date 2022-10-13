@@ -15,13 +15,13 @@ class ApiService {
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
   // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseUrl = "http://10.28.11.12/kertas_v2/index.php/api/";//laptope imam
+  String baseUrl = "http://10.28.11.10/kertas_v2/index.php/api/";//laptope imam
   // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
   static String baseTampilPegawaiVerifikasi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/verifikasi/";
-  static String baseLaporan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/laporan/";
-  static String baseStatusLogout = "https://development.kebumenkab.go.id/siltapkin/index.php/api/Login/proses_logout";
+  // static String baseLaporan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/laporan/";
+  // static String baseStatusLogout = "https://development.kebumenkab.go.id/siltapkin/index.php/api/Login/proses_logout";
   //static String baseStatusRunning = "https://development.kebumenkab.go.id/kertas/index.php/api/app/status";
   static String baseSudahverfiPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/verif_individu_bulanan?token=";
   String baseDaftarPekerjaan = "https://development.kebumenkab.go.id/siltapkin/index.php/api/master_data/pekerjaan_lepas?token=";
@@ -484,9 +484,15 @@ class ApiService {
   }
 
 
-  laporanInividu(String tokenByID, String bulanGet, String tahunGet) async {
-    final response = await http.get(Uri.parse(baseLaporan+"individu_bulanan_new?bulan="+bulanGet+"&tahun="+tahunGet+"&token="+tokenByID,));
-    var dataObjJson = jsonDecode(response.body)['data'] as List;
+  laporanInividu(String bulanGet, String tahunGet) async {
+    await getPrefFromApi();
+    final response = await http.get(Uri.parse(baseUrl+"pekerjaan/getpekerjaanbytanggal/"+iduser+"/"+tahunGet+bulanGet,),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "authorization": tokenlogin
+      },);
+    var dataObjJson = jsonDecode(response.body)['pekerjaan_data'] as List;
 //    List dataObjs = dataObjJson.map((e) => DaftarAktivitas.fromJson(e)).toList();
     if (response.statusCode == 200) {
       if(dataObjJson.isEmpty){
@@ -509,7 +515,7 @@ class ApiService {
   }
 
   laporanInividuTahunan(String tokenByID, String tahunGet) async {
-    final response = await http.get(Uri.parse(baseLaporan+"individu_tahunan?tahun="+tahunGet+"&token="+tokenByID,));
+    final response = await http.get(Uri.parse(baseUrl+"laporan/individu_tahunan?tahun="+tahunGet+"&token="+tokenByID,));
     var dataObjJsonTahunan = jsonDecode(response.body)['data'] as List;
 //    List dataObjs = dataObjJson.map((e) => DaftarAktivitas.fromJson(e)).toList();
     if (response.statusCode == 200) {
