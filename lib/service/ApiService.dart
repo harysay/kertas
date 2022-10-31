@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:kertas/fragments/verifikasi_fragment.dart';
 import 'package:kertas/model/daftar_pegawaiverifikasi.dart';
+import 'package:kertas/model/daftar_presensi.dart';
 import 'package:kertas/model/data_tusi.dart';
 import 'package:kertas/response/daftarTusiResponse.dart';
 import 'package:kertas/response/daftar_aktivitas_response_var.dart';
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:kertas/model/daftar_aktivitas.dart';
 import 'package:kertas/response/daftar_aktivitas_response.dart';
 import 'package:kertas/response/daftar_pegawaiverifikasi_response.dart';
+import 'package:kertas/response/daftar_presensi_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
@@ -211,6 +213,29 @@ class ApiService {
 //  final String key = 'r4h4514';
 //  final String basicAuth =
 //      'Basic ' + base64Encode(utf8.encode('$username:$password'));
+
+  DaftarPresensiResponse presensi = new DaftarPresensiResponse();
+  Future<List<DaftarPresensi>?> getAllPresensiById() async {
+    //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
+    await getPrefFromApi();
+    final response = await http.get(Uri.parse(baseUrl+"pekerjaan/getpekerjaanbyuser/"+iduser),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "authorization": tokenlogin
+      },
+//      body: inputMap,
+    );
+
+    presensi = DaftarPresensiResponse.fromJson(json.decode(response.body));
+    if (response.statusCode == 200) {
+      List<DaftarPresensi>? data = presensi.data;
+      return data;
+    } else {
+      return null;
+    }
+  }
+
   DaftarAktivitasResponse aktivitasBelum = new DaftarAktivitasResponse();
   Future<List<DaftarAktivitas>?> getAllAktivitasById() async {
     //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
