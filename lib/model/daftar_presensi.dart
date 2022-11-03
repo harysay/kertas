@@ -16,7 +16,7 @@ class DaftarPresensi{
   
   factory DaftarPresensi.fromJson(Map<String, dynamic> map) {
     return DaftarPresensi(
-      idOpd: map["id_opd"],
+      //idOpd: map["id_opd"],
       idUsers: map["id_users"],
       latitude: map["latitude"],
       longitude: map["longitude"],

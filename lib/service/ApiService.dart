@@ -17,7 +17,7 @@ class ApiService {
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
   // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseUrl = "http://10.28.11.10/kertas_v2/index.php/api/";//laptope imam
+  String baseUrl = "http://10.28.11.13/kertas_v2/index.php/api/";//laptope imam
   // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
@@ -218,7 +218,7 @@ class ApiService {
   Future<List<DaftarPresensi>?> getAllPresensiById() async {
     //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
     await getPrefFromApi();
-    final response = await http.get(Uri.parse(baseUrl+"pekerjaan/getpekerjaanbyuser/"+iduser),
+    final response = await http.get(Uri.parse(baseUrl+"absensi/absenbyusers/"+iduser),
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded",

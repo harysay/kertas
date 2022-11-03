@@ -76,13 +76,444 @@ class _FirstFragmentState extends State<FirstFragment> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Center(
-      //child: new Text("Hello Fragment 1"),
+    return Container( //Outer Container
+      // height: 900,
+      // width: 400,
+      // decoration: BoxDecoration(
+      //   border: Border.all(
+      //     color: Colors.black,
+      //   ),
+      // ),
       child: Column(
-        children: <Widget>[
-          new Container(
-              padding: new EdgeInsets.all(20.0),
-              child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+//           Align(
+//           alignment: Alignment.centerRight,
+//           child:  TopBox()
+//             ,),
+          TopBox(tarikanNamaUser: tarikanNamaUser,tarikanNIKUser: tarikanNIKUser,tarikNamaBidang: tarikNamaBidang,tarikanInstansiUser: tarikanInstansiUser,),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(children: [
+                  InkWell(
+                    onTap: () {
+                      _checkIn("masuk");
+                    }, // Image tapped
+                    splashColor:
+                    Colors.white10, // Splash color over image
+                    child: Ink.image(
+                      fit: BoxFit.cover, // Fixes border issues
+                      width: 90,
+                      height: 90,
+                      image: AssetImage(
+                        'assets/finger_green.png',
+                      ),
+                    ),
+                  ),
+                  new Text("Check In"),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(children: [
+                  InkWell(
+                    onTap: () {
+                      _checkIn("pulang");
+                    }, // Image tapped
+                    splashColor:
+                    Colors.white10, // Splash color over image
+                    child: Ink.image(
+                      fit: BoxFit.cover, // Fixes border issues
+                      width: 90,
+                      height: 90,
+                      image: AssetImage(
+                        'assets/finger_red.png',
+                      ),
+                    ),
+                  ),
+                  new Text("Check Out"),
+                ]),
+              )
+            ],
+          ),
+          Spacer(),
+          BottomBox(),
+        ],
+      ),
+    );
+    // return new Container(
+    //   child: Padding(
+    //     padding: const EdgeInsets.all(8.0),
+    //     child: Align(
+    //       alignment: Alignment.topCenter,
+    //       child: Column(
+    //         children: <Widget>[
+    //           Column(
+    //           crossAxisAlignment: CrossAxisAlignment.center,
+    //             mainAxisSize: MainAxisSize.max,
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: <Widget>[
+    //               new Row(
+    //                 children: <Widget>[
+    //                   new Text("Nama"),
+    //                   SizedBox(
+    //                     width: 25.0,
+    //                   ),
+    //                   new Text(": "),
+    //                   SizedBox(
+    //                     width: 10.0,
+    //                   ),
+    //                   Flexible(child: new Text(tarikanNamaUser!))
+    //                 ],
+    //               ),
+    //               new Row(
+    //                 children: <Widget>[
+    //                   new Text("NIK"),
+    //                   SizedBox(
+    //                     width: 40.0,
+    //                   ),
+    //                   new Text(": "),
+    //                   SizedBox(
+    //                     width: 10.0,
+    //                   ),
+    //                   Flexible(child: new Text(tarikanNIKUser!))
+    //                 ],
+    //               ),
+    //               new Row(
+    //                 children: <Widget>[
+    //                   new Text("Bidang"),
+    //                   SizedBox(
+    //                     width: 20.0,
+    //                   ),
+    //                   new Text(": "),
+    //                   SizedBox(
+    //                     width: 10.0,
+    //                   ),
+    //                   Flexible(child: new Text(tarikNamaBidang!))
+    //                 ],
+    //               ),
+    //               new Row(
+    //                 children: <Widget>[
+    //                   new Text("Instansi"),
+    //                   SizedBox(
+    //                     width: 14.0,
+    //                   ),
+    //                   new Text(": "),
+    //                   SizedBox(
+    //                     width: 10.0,
+    //                   ),
+    //                   Flexible(child: new Text(tarikanInstansiUser!))
+    //                 ],
+    //               ),
+    //             ]
+    //           ),
+    //           Column(
+    //             crossAxisAlignment: CrossAxisAlignment.center,
+    //             mainAxisSize: MainAxisSize.max,
+    //             mainAxisAlignment: MainAxisAlignment.end,
+    //             children: <Widget>[
+    //               new Container(
+    //                   padding: new EdgeInsets.all(10.0),
+    //                   child: new Column(
+    //                     children: <Widget>[
+    //
+    //                       new Row(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         children: <Widget>[
+    //                           Padding(
+    //                             padding: const EdgeInsets.all(30),
+    //                             child: Column(children: [
+    //                               InkWell(
+    //                                 onTap: () {
+    //                                   _checkIn("masuk");
+    //                                 }, // Image tapped
+    //                                 splashColor:
+    //                                     Colors.white10, // Splash color over image
+    //                                 child: Ink.image(
+    //                                   fit: BoxFit.cover, // Fixes border issues
+    //                                   width: 90,
+    //                                   height: 90,
+    //                                   image: AssetImage(
+    //                                     'assets/finger_green.png',
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                               new Text("Check In"),
+    //                             ]),
+    //                           ),
+    //                           Padding(
+    //                             padding: const EdgeInsets.all(30),
+    //                             child: Column(children: [
+    //                               InkWell(
+    //                                 onTap: () {
+    //                                   _checkIn("pulang");
+    //                                 }, // Image tapped
+    //                                 splashColor:
+    //                                     Colors.white10, // Splash color over image
+    //                                 child: Ink.image(
+    //                                   fit: BoxFit.cover, // Fixes border issues
+    //                                   width: 90,
+    //                                   height: 90,
+    //                                   image: AssetImage(
+    //                                     'assets/finger_red.png',
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                               new Text("Check Out"),
+    //                             ]),
+    //                           )
+    //                         ],
+    //                       ),
+    //                       new Row(
+    //                         mainAxisAlignment: MainAxisAlignment.center,
+    //                         children: [
+    //
+    //                         ],
+    //                       ),
+    //                       new Padding(
+    //                         padding:  const EdgeInsets.all(10),
+    //                         child: ElevatedButton(
+    //                           style: ElevatedButton.styleFrom(
+    //                             primary: Colors.green, // background
+    //                             onPrimary: Colors.white, // foreground
+    //                           ),
+    //                           onPressed: () {
+    //                             Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),).then((val) => val ? _getRequests() : null);
+    //                           },
+    //                           child: Text('History Presensi'),
+    //                         ),)
+    //                     ],
+    //                   )),
+    //
+    //               new Container(
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.all(8.0),
+    //                     child: Align(
+    //                       alignment: Alignment.bottomCenter,
+    //                       child: ElevatedButton(
+    //                           child: const Text('Bottom Button!', style: TextStyle(fontSize: 20)),
+    //                           onPressed: () {},
+    //                           style: ElevatedButton.styleFrom(
+    //                             primary: Colors.teal,
+    //                             minimumSize: const Size.fromHeight(50),
+    //                           )),
+    //                     ),
+    //                   ))
+    //             ],
+    //           ),
+    //           ElevatedButton(
+    //               child: const Text('Text Button'),
+    //               onPressed: () {},
+    //               style: ElevatedButton.styleFrom(
+    //                 primary: Colors.teal,
+    //                 minimumSize: const Size.fromHeight(50),
+    //               )),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    //   //child: new Text("Hello Fragment 1"),
+    //   // child: Column(
+    //   //   children: <Widget>[
+    //   //     new Container(
+    //   //         padding: new EdgeInsets.all(10.0),
+    //   //         child: new Column(
+    //   //           children: <Widget>[
+    //   //             new Row(
+    //   //               children: <Widget>[
+    //   //                 new Text("Nama"),
+    //   //                 SizedBox(
+    //   //                   width: 25.0,
+    //   //                 ),
+    //   //                 new Text(": "),
+    //   //                 SizedBox(
+    //   //                   width: 10.0,
+    //   //                 ),
+    //   //                 Flexible(child: new Text(tarikanNamaUser!))
+    //   //               ],
+    //   //             ),
+    //   //             new Row(
+    //   //               children: <Widget>[
+    //   //                 new Text("NIK"),
+    //   //                 SizedBox(
+    //   //                   width: 40.0,
+    //   //                 ),
+    //   //                 new Text(": "),
+    //   //                 SizedBox(
+    //   //                   width: 10.0,
+    //   //                 ),
+    //   //                 Flexible(child: new Text(tarikanNIKUser!))
+    //   //               ],
+    //   //             ),
+    //   //             new Row(
+    //   //               children: <Widget>[
+    //   //                 new Text("Bidang"),
+    //   //                 SizedBox(
+    //   //                   width: 20.0,
+    //   //                 ),
+    //   //                 new Text(": "),
+    //   //                 SizedBox(
+    //   //                   width: 10.0,
+    //   //                 ),
+    //   //                 Flexible(child: new Text(tarikNamaBidang!))
+    //   //               ],
+    //   //             ),
+    //   //             new Row(
+    //   //               children: <Widget>[
+    //   //                 new Text("Instansi"),
+    //   //                 SizedBox(
+    //   //                   width: 14.0,
+    //   //                 ),
+    //   //                 new Text(": "),
+    //   //                 SizedBox(
+    //   //                   width: 10.0,
+    //   //                 ),
+    //   //                 Flexible(child: new Text(tarikanInstansiUser!))
+    //   //               ],
+    //   //             ),
+    //   //             new Row(
+    //   //               mainAxisAlignment: MainAxisAlignment.center,
+    //   //               children: <Widget>[
+    //   //                 Padding(
+    //   //                   padding: const EdgeInsets.all(30),
+    //   //                   child: Column(children: [
+    //   //                     InkWell(
+    //   //                       onTap: () {
+    //   //                         _checkIn("masuk");
+    //   //                       }, // Image tapped
+    //   //                       splashColor:
+    //   //                           Colors.white10, // Splash color over image
+    //   //                       child: Ink.image(
+    //   //                         fit: BoxFit.cover, // Fixes border issues
+    //   //                         width: 90,
+    //   //                         height: 90,
+    //   //                         image: AssetImage(
+    //   //                           'assets/finger_green.png',
+    //   //                         ),
+    //   //                       ),
+    //   //                     ),
+    //   //                     new Text("Check In"),
+    //   //                   ]),
+    //   //                 ),
+    //   //                 Padding(
+    //   //                   padding: const EdgeInsets.all(30),
+    //   //                   child: Column(children: [
+    //   //                     InkWell(
+    //   //                       onTap: () {
+    //   //                         _checkIn("pulang");
+    //   //                       }, // Image tapped
+    //   //                       splashColor:
+    //   //                           Colors.white10, // Splash color over image
+    //   //                       child: Ink.image(
+    //   //                         fit: BoxFit.cover, // Fixes border issues
+    //   //                         width: 90,
+    //   //                         height: 90,
+    //   //                         image: AssetImage(
+    //   //                           'assets/finger_red.png',
+    //   //                         ),
+    //   //                       ),
+    //   //                     ),
+    //   //                     new Text("Check Out"),
+    //   //                   ]),
+    //   //                 )
+    //   //               ],
+    //   //             ),
+    //   //             new Row(
+    //   //               mainAxisAlignment: MainAxisAlignment.center,
+    //   //               children: [
+    //   //
+    //   //               ],
+    //   //             ),
+    //   //             new Padding(
+    //   //               padding:  const EdgeInsets.all(10),
+    //   //               child: ElevatedButton(
+    //   //                 style: ElevatedButton.styleFrom(
+    //   //                   primary: Colors.green, // background
+    //   //                   onPrimary: Colors.white, // foreground
+    //   //                 ),
+    //   //                 onPressed: () {
+    //   //                   Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),).then((val) => val ? _getRequests() : null);
+    //   //                 },
+    //   //                 child: Text('History Presensi'),
+    //   //               ),)
+    //   //           ],
+    //   //         )),
+    //   //
+    //   //     new Container(
+    //   //         child: Padding(
+    //   //           padding: const EdgeInsets.all(8.0),
+    //   //           child: Align(
+    //   //             alignment: Alignment.bottomCenter,
+    //   //             child: ElevatedButton(
+    //   //                 child: const Text('Bottom Button!', style: TextStyle(fontSize: 20)),
+    //   //                 onPressed: () {},
+    //   //                 style: ElevatedButton.styleFrom(
+    //   //                   primary: Colors.teal,
+    //   //                   minimumSize: const Size.fromHeight(50),
+    //   //                 )),
+    //   //           ),
+    //   //         ))
+    //   //   ],
+    //   // ),
+    // );
+  }
+}
+
+class BottomBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blue,
+      height: 70,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
+              child: const Text('History Presensi',
+                  style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.teal,
+                minimumSize: const Size.fromHeight(50),
+              )),
+        ),
+      )
+    );
+  }
+}
+// class MiddleBox extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
+class TopBox extends StatelessWidget {
+  String? tarikanNamaUser;
+  String? tarikanNIKUser;
+  String? tarikNamaBidang;
+  String? tarikanInstansiUser;
+  TopBox({this.tarikanNamaUser, this.tarikanNIKUser,this.tarikNamaBidang, this.tarikanInstansiUser});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(15),
+      color: Colors.blue,
+      // height: 100,
+      // width: 175,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
@@ -136,121 +567,12 @@ class _FirstFragmentState extends State<FirstFragment> {
                       Flexible(child: new Text(tarikanInstansiUser!))
                     ],
                   ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: Column(children: [
-                          InkWell(
-                            onTap: () {
-                              _checkIn("masuk");
-                            }, // Image tapped
-                            splashColor:
-                                Colors.white10, // Splash color over image
-                            child: Ink.image(
-                              fit: BoxFit.cover, // Fixes border issues
-                              width: 90,
-                              height: 90,
-                              image: AssetImage(
-                                'assets/finger_green.png',
-                              ),
-                            ),
-                          ),
-                          new Text("Check In"),
-                        ]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(30),
-                        child: Column(children: [
-                          InkWell(
-                            onTap: () {
-                              _checkIn("pulang");
-                            }, // Image tapped
-                            splashColor:
-                                Colors.white10, // Splash color over image
-                            child: Ink.image(
-                              fit: BoxFit.cover, // Fixes border issues
-                              width: 90,
-                              height: 90,
-                              image: AssetImage(
-                                'assets/finger_red.png',
-                              ),
-                            ),
-                          ),
-                          new Text("Check Out"),
-                        ]),
-                      )
-                    ],
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding:  const EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.greenAccent, // background
-                            onPrimary: Colors.orange, // foreground
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),).then((val) => val ? _getRequests() : null);
-                          },
-                          child: Text('History Presensi'),
-                        ),)
-                    ],
-                  )
                 ],
-              )),
-          // new Container(
-          //     padding: new EdgeInsets.all(20.0),
-          //     color: Colors.yellow[50],
-          //     child: new Column(
-          //       children: <Widget>[
-          //         new Center(
-          //           child: new Text("Data Atasan",style: styleTitle,),
-          //         ),
-          //         new Row(
-          //           children: <Widget>[
-          //             new Text("Nama"),
-          //             SizedBox(width: 55.0,),
-          //             new Text(": "),
-          //             SizedBox(width: 10.0,),
-          //             Flexible(child: new Text(tarikanNamaAtasan,))
-          //           ],
-          //         ),
-          //         new Row(
-          //           children: <Widget>[
-          //             new Text("NIP"),
-          //             SizedBox(width: 70.0,),
-          //             new Text(": "),
-          //             SizedBox(width: 10.0,),
-          //             Flexible(child: new Text(tarikanNipAtasan))
-          //           ],
-          //         ),
-          //         new Row(
-          //           children: <Widget>[
-          //             new Text("Jabatan"),
-          //             SizedBox(width: 42.0,),
-          //             new Text(": "),
-          //             SizedBox(width: 10.0,),
-          //             Flexible(child: new Text(tarikanJabatanAtasan))
-          //           ],
-          //         ),
-          //         new Row(
-          //           children: <Widget>[
-          //             new Text("Instansi"),
-          //             SizedBox(width: 44.0,),
-          //             new Text(": "),
-          //             SizedBox(width: 10.0,),
-          //             Flexible(child: new Text(tarikanInstansiAtasan))
-          //           ],
-          //         )
-          //       ],
-          //     )
-          // )
-        ],
-      ),
+              ),
+            ),
+
+          ]
+        ),
     );
   }
 }
