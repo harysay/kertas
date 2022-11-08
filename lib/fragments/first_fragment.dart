@@ -96,43 +96,56 @@ class _FirstFragmentState extends State<FirstFragment> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(20),
                 child: Column(children: [
-                  InkWell(
-                    onTap: () {
-                      _checkIn("masuk");
-                    }, // Image tapped
-                    splashColor:
-                    Colors.white10, // Splash color over image
-                    child: Ink.image(
-                      fit: BoxFit.cover, // Fixes border issues
-                      width: 90,
-                      height: 90,
-                      image: AssetImage(
-                        'assets/finger_green.png',
+                  Ink(
+                    padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Color(0xffFFEFD6),
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                    ),
+                      child: InkWell(
+                        onTap: () {
+                          _checkIn("masuk");
+                        }, // Image tapped
+                        // splashColor: Colors.white10, // Splash color over image
+                        child: Ink.image(
+                          // fit: BoxFit.cover, // Fixes border issues
+                          width: 90,
+                          height: 90,
+                          image: AssetImage(
+                            'assets/finger_green.png',
+                          ),
+                        ),
+                      )
                   ),
                   new Text("Check In"),
                 ]),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(30),
                 child: Column(children: [
-                  InkWell(
-                    onTap: () {
-                      _checkIn("pulang");
-                    }, // Image tapped
-                    splashColor:
-                    Colors.white10, // Splash color over image
-                    child: Ink.image(
-                      fit: BoxFit.cover, // Fixes border issues
-                      width: 90,
-                      height: 90,
-                      image: AssetImage(
-                        'assets/finger_red.png',
+                  Ink(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Color(0xffFFEFD6),
+                          borderRadius: BorderRadius.circular(20)
                       ),
-                    ),
+                      child: InkWell(
+                        onTap: () {
+                          _checkIn("pulang");
+                        }, // Image tapped
+                        // splashColor: Colors.white10, // Splash color over image
+                        child: Ink.image(
+                          // fit: BoxFit.cover, // Fixes border issues
+                          width: 90,
+                          height: 90,
+                          image: AssetImage(
+                            'assets/finger_red.png',
+                          ),
+                        ),
+                      )
                   ),
                   new Text("Check Out"),
                 ]),
@@ -461,38 +474,6 @@ class _FirstFragmentState extends State<FirstFragment> {
     // );
   }
 }
-
-class BottomBox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      height: 70,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: ElevatedButton(
-              child: const Text('History Presensi',
-                  style: TextStyle(fontSize: 20)),
-              onPressed: () {
-                Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),);
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.teal,
-                minimumSize: const Size.fromHeight(50),
-              )),
-        ),
-      )
-    );
-  }
-}
-// class MiddleBox extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
 class TopBox extends StatelessWidget {
   String? tarikanNamaUser;
   String? tarikanNIKUser;
@@ -503,11 +484,18 @@ class TopBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(15),
-      color: Colors.blue,
+      // color: Colors.blue,
+      decoration: BoxDecoration(
+          color: Color(0xffFAF7F0),
+          border: Border.all(
+            color: Color(0xffFCDDB0),
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
       // height: 100,
       // width: 175,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -572,7 +560,47 @@ class TopBox extends StatelessWidget {
             ),
 
           ]
-        ),
+      ),
     );
   }
 }
+
+class BottomBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: Color(0xffFFEFD6),
+      decoration: BoxDecoration(
+          color: Color(0xffFAF7F0),
+          border: Border.all(
+            color: Color(0xffFCDDB0),
+          ),
+          // borderRadius: BorderRadius.all(Radius.circular(15))
+      ),
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
+              child: const Text('History Presensi',
+                  style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new HistoryPresensi()),);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                minimumSize: const Size.fromHeight(50),
+              )),
+        ),
+      )
+    );
+  }
+}
+// class MiddleBox extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
+

@@ -32,6 +32,11 @@ class _HistoryPresensi extends State<HistoryPresensi>{
     String formattedTime = DateFormat.Hms().format(tempDate);
     return formattedTime;
   }
+  convertStringToDateOnly(String stringnya){
+    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(stringnya); //=> String to DateTime
+    String formattedTime = "${tempDate.day}-${tempDate.month}-${tempDate.year}";
+    return formattedTime;
+  }
 
   Future refreshData() async {
     setState(() {});
@@ -52,6 +57,13 @@ class _HistoryPresensi extends State<HistoryPresensi>{
     // TODO: implement build
     return Scaffold(
       key: _scaffoldState,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text("Daftar Presensi",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: FutureBuilder<List<DaftarPresensi>?>(
         future: api.getAllPresensiById(),
         builder: (context, snapshot) {
@@ -105,7 +117,8 @@ class _HistoryPresensi extends State<HistoryPresensi>{
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             getTitle(aktivitas.tipePresensi!),
-                                            getSubName(aktivitas.fullDate!),
+                                            getSubName(convertStringToDateOnly(aktivitas.fullDate!))
+                                            // getSubName(aktivitas.fullDate!),
                                             // getVenue("E-204"),
                                           ],
                                         ),
@@ -282,7 +295,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
   Widget getSubName(String subName) {
     return Padding(
       padding: EdgeInsets.only(bottom: 4.0),
-      child: Text(subName),
+      child: Text(style: TextStyle(fontSize: 18, color: Colors.black54),subName),
     );
   }
 

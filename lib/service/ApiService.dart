@@ -17,7 +17,7 @@ class ApiService {
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
   // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseUrl = "http://10.28.11.13/kertas_v2/index.php/api/";//laptope imam
+  String baseUrl = "http://10.28.11.9/kertas_v2/index.php/api/";//laptope imam
   // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
