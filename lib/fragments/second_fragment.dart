@@ -164,49 +164,49 @@ class _SecondFragmentState extends State<SecondFragment>{
                                     // Padding(
                                     //     padding: EdgeInsets.only(
                                     //         bottom: 2)), //atur jarak antar InkWell
-                                    InkWell(
-//                              child:  Icon(Icons.edit, size: 20,),
-                                      child: new Container(
-                                        child: Icon(
-                                          Icons.edit,
-                                          size: 20,
-                                        ),
-//                                color: Colors.orange[100],
-//                                         decoration: BoxDecoration(
-//                                           borderRadius: BorderRadius.circular(10),
-//                                           color: Colors.grey[100],
-//                                           boxShadow: [
-//                                             BoxShadow(
-//                                                 color: Colors.greenAccent,
-//                                                 spreadRadius: 1),
-//                                           ],
+//                                     InkWell(
+// //                              child:  Icon(Icons.edit, size: 20,),
+//                                       child: new Container(
+//                                         child: Icon(
+//                                           Icons.edit,
+//                                           size: 20,
 //                                         ),
-                                        height: 18,
-//                                width: 50.0,
-//                                height: 50.0,
-                                      ),
-                                      onTap: () {
-                                        //Masukan navigator di sini
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return FormScreen(
-                                                daftaraktivitas: aktivitas,
-                                                daftarSudahAda: semuaAktivitas,
-                                              );
-                                            })).then((value) => value?_getRequests():null);
-                                      },
-                                    ),
-                                    InkWell(
-                                        child: new Container(
-                                          child: Icon(
-                                            Icons.arrow_forward_sharp,
-                                            size: 20,
-                                          ),
-                                          height: 10,
-//                                width: 50.0,
-//                                height: 50.0,
-                                        )
-                                    )
+// //                                color: Colors.orange[100],
+// //                                         decoration: BoxDecoration(
+// //                                           borderRadius: BorderRadius.circular(10),
+// //                                           color: Colors.grey[100],
+// //                                           boxShadow: [
+// //                                             BoxShadow(
+// //                                                 color: Colors.greenAccent,
+// //                                                 spreadRadius: 1),
+// //                                           ],
+// //                                         ),
+//                                         height: 18,
+// //                                width: 50.0,
+// //                                height: 50.0,
+//                                       ),
+//                                       onTap: () {
+//                                         //Masukan navigator di sini
+//                                         Navigator.push(context,
+//                                             MaterialPageRoute(builder: (context) {
+//                                               return FormScreen(
+//                                                 daftaraktivitas: aktivitas,
+//                                                 daftarSudahAda: semuaAktivitas,
+//                                               );
+//                                             })).then((value) => value?_getRequests():null);
+//                                       },
+//                                     ),
+//                                     InkWell(
+//                                         child: new Container(
+//                                           child: Icon(
+//                                             Icons.arrow_forward_sharp,
+//                                             size: 20,
+//                                           ),
+//                                           height: 10,
+// //                                width: 50.0,
+// //                                height: 50.0,
+//                                         )
+//                                     )
 
                                   ],
                                 ),
@@ -226,44 +226,14 @@ class _SecondFragmentState extends State<SecondFragment>{
                                     children: <Widget>[
                                       Flexible(
                                           child: new Text(aktivitas.deskripsiPekerjaan!,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.fade,
                                               style: TextStyle(
                                                   fontSize: 14, color: Colors.black)))
                                       //Text(aktivitas.uraianPekerjaan)
                                     ]),
                                 trailing: Column(
                                   children: <Widget>[
-//                               InkWell(
-// //                              child:  Icon(Icons.edit, size: 20,),
-//                                 child: new Container(
-//                                   child: Icon(
-//                                     Icons.edit,
-//                                     size: 20,
-//                                   ),
-// //                                color: Colors.orange[100],
-//                                   decoration: BoxDecoration(
-//                                     borderRadius: BorderRadius.circular(10),
-//                                     color: Colors.grey[100],
-//                                     boxShadow: [
-//                                       BoxShadow(
-//                                           color: Colors.lightBlue,
-//                                           spreadRadius: 1),
-//                                     ],
-//                                   ),
-//                                   height: 20,
-// //                                width: 50.0,
-// //                                height: 50.0,
-//                                 ),
-//                                 onTap: () {
-//                                   //Masukan navigator di sini
-//                                   Navigator.push(context,
-//                                       MaterialPageRoute(builder: (context) {
-//                                     return FormScreen(
-//                                       daftaraktivitas: aktivitas,
-//                                       daftarSudahAda: semuaAktivitas,
-//                                     );
-//                                   }));
-//                                 },
-//                               ),
                                     Padding(
                                         padding: EdgeInsets.only(
                                             bottom: 15)),
@@ -273,15 +243,6 @@ class _SecondFragmentState extends State<SecondFragment>{
                                           Icons.delete,
                                           size: 20,
                                         ),
-//                                color: Colors.orange[100],
-//                                         decoration: BoxDecoration(
-//                                           borderRadius: BorderRadius.circular(10),
-//                                           color: Colors.grey[100],
-//                                           boxShadow: [
-//                                             BoxShadow(
-//                                                 color: Colors.red, spreadRadius: 1),
-//                                           ],
-//                                         ),
                                         height: 30,
 //                                width: 50.0,
 //                                height: 50.0,

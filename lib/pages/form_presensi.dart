@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:kertas/model/daftar_presensi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:math';
@@ -31,16 +33,16 @@ final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 class FormPresensi extends StatefulWidget {
   // List<DaftarAktivitas>? daftarSudahAda;
   String masukAtauPulang;
-  DaftarAktivitas? daftaraktivitas;
-  FormPresensi({required this.masukAtauPulang, this.daftaraktivitas});
+  // DaftarAktivitas? daftaraktivitas;
+  FormPresensi({required this.masukAtauPulang});
 
   @override
   _FormPresensiState createState() => _FormPresensiState();
 }
 
 class _FormPresensiState extends State<FormPresensi> {
-  Position? _currentPosition;
-  String? _currentAddress;
+  // Position? _currentPosition;
+  // String? _currentAddress;
   late CameraDescription _cameraDescription;
   var dataJson,_daftarPekerjaan,_daftarSubPekerjaan;
   //List<DaftarPekerjaan> semuaPekerjaan;
@@ -61,6 +63,13 @@ class _FormPresensiState extends State<FormPresensi> {
   ApiService api = new ApiService();
   TextEditingController ctrlIdSubPekerjaan = new TextEditingController();
   TextEditingController ctrlUraianPekerjaan = new TextEditingController();
+
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+  String long = "", lat = "";
+  late StreamSubscription<Position> positionStream;
 
   var loading = false;
   String? gambarPath="";
@@ -156,8 +165,10 @@ class _FormPresensiState extends State<FormPresensi> {
     //List<String> getPekerjaan() => _list.map((map) => DaftarPekerjaan.fromJson(map)).map(item) =>ite
     //_fetchData();
     // _getCurrentLocation();
+    getPref();
+    getLocation();
 
-    //getPref();
+
     // statesList = api.getAllDataTusi(tokenlistaktivitas).then((value) => null) as List?;
     _getCamera();
     //Jika ada lemparan dari second_fragment (Edit) maka dilakukan berikut
@@ -251,7 +262,7 @@ class _FormPresensiState extends State<FormPresensi> {
         backgroundColor: Colors.orange[400],
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          widget.daftaraktivitas == null ? "Form Masuk" : "Form Pulang",
+          widget.masukAtauPulang == "masuk" ? "Form Masuk" : "Form Pulang",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -264,79 +275,107 @@ class _FormPresensiState extends State<FormPresensi> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  AbsorbPointer(
-                    absorbing: widget.daftaraktivitas == null ? false : true,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        TextButton(
-                          style: ButtonStyle(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      TextButton(
+                        style: ButtonStyle(
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.greenAccent)))
-                          ),
-                          onPressed: () {
-                            DatePicker.showDatePicker(context,
-                                theme: DatePickerTheme(
-                                  containerHeight: 210.0,
-                                ),
-                                showTitleActions: true,
-                                minTime: DateTime(2019, 1, 1),
-                                maxTime: DateTime(2025, 12, 31), onConfirm: (date) {
-                                  print('confirm $date');
-                                  _date = '${date.year}/${date.month.toString().padLeft(2,'0')}/${date.day.toString().padLeft(2,'0')}';
-                                  setState(() {});
-                                }, currentTime: DateTime.now(), locale: LocaleType.en);
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 50.0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text("Tanggal aktivitas",style: Theme.of(context).textTheme.caption),
-                                        Container(
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.date_range,
-                                                size: 18.0,
-                                                color: widget.daftaraktivitas == null ? Colors.teal : Colors.black12,
-                                              ),
-                                              Text(
-                                                " $_date",
-                                                style: TextStyle(
-                                                    color: widget.daftaraktivitas == null ? Colors.teal : Colors.black12,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18.0),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-
-                                  ],
-                                ),
-                                Text(widget.daftaraktivitas == null ? "  Ubah" : "",
-                                  style: TextStyle(
-                                      color: Colors.teal,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // color: Colors.white,
+                                    side: BorderSide(color: Colors.greenAccent)))
                         ),
-                      ],
-                    ),
+                        onPressed: () {
+                          DatePicker.showDatePicker(context,
+                              theme: DatePickerTheme(
+                                containerHeight: 210.0,
+                              ),
+                              showTitleActions: true,
+                              minTime: DateTime(2019, 1, 1),
+                              maxTime: DateTime(2025, 12, 31), onConfirm: (date) {
+                                print('confirm $date');
+                                _date = '${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}';
+                                setState(() {});
+                              }, currentTime: DateTime.now(), locale: LocaleType.en);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 50.0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Tanggal aktivitas",style: Theme.of(context).textTheme.caption),
+                                      Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.date_range,
+                                              size: 18.0,
+                                            ),
+                                            Text(
+                                              " $_date",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18.0),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+
+                                ],
+                              ),
+                              Text("Ubah",
+                                style: TextStyle(
+                                    color: Colors.teal,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 18.0, right: 18.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Text(servicestatus? "GPS is Enabled": "GPS is disabled."),
+                          // Text(haspermission? "GPS is Enabled": "GPS is disabled."),
+
+                          Text("Longitude: $long", style:TextStyle(fontSize: 20)),
+                          Text("Latitude: $lat", style: TextStyle(fontSize: 20),),
+                          // long!=null? Text('Longitude: $long', style:TextStyle(fontSize: 20)) : Text('Menunggu Koordinat Long'),
+                          // lat!=null? Text('Latitude: $lat', style:TextStyle(fontSize: 20)) : Text('Menunggu Koordinat Lat'),
+
+                          // _currentPosition!=null? Text('Latitude: ${_currentPosition?.latitude}') : Text('Menunggu Koordinat Lat'),
+                          // _currentPosition!=null? Text('Longitude: ${_currentPosition?.longitude}') : Text('Menunggu Koordinat Long'),
+                          // _currentAddress!=null? Text('Alamat: ${_currentAddress}') : Text('Menunggu Alamat'),
+                          // if (_currentPosition != null) Text(
+                          //     "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
+                          // ),
+                          // Text("LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
+                          // FlatButton(
+                          //   child: Text("Get location"),
+                          //   onPressed: () {
+                          //     _getCurrentLocation();
+                          //   },
+                          // ),
+                        ],
+                      ),
                   ),
                   SizedBox(
                     height: 15.0,
@@ -452,67 +491,24 @@ class _FormPresensiState extends State<FormPresensi> {
                                       padding: EdgeInsets.symmetric(vertical: 12.0),
                                       onPressed: () async {
                                         if (validateInput()) {
-                                          DaftarAktivitas dataIn = new DaftarAktivitas(
-                                            idPekerjaan: this.widget.daftaraktivitas != null
-                                                ? this.widget.daftaraktivitas!.idPekerjaan
-                                                : "",
+                                          DaftarPresensi dataIn = new DaftarPresensi(
                                             idOpd: idOpd,
                                             idUsers: idUser,
-                                            idTusi: _state,
-                                            deskripsiPekerjaan: ctrlUraianPekerjaan.text,
-                                            tglPekerjaan: _date,
-                                            // idSubPekerjaan: getIdSubPekerjaanValue!,
-                                            jamMulai: _timeMulai,
-                                            jamSelesai: _timeBatasCheckIn);
-//                                    if(compareJamTanggal(dataIn, dataIn.tglKinerja, dataIn.jamSelesai)==true){
-//                                      if(_date == "datedariserver" && _timeMulai<="timedariserver"){
-//
-//                                      }
-                                          DateFormat dateFormat = new DateFormat.Hm();
-                                          var now = DateTime.now();
-                                          var formatterTime = DateFormat('kk:mm');
-                                          String actualTime = formatterTime.format(now);
-                                          DateTime mulai = dateFormat.parse(actualTime);
-                                          DateTime selesai = dateFormat.parse(_timeBatasCheckIn);
-
-                                          if(mulai.isAfter(selesai)) {
-                                            // tolak
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                              content: Text("Anda tidak diperbolehkan presensi masuk sesudah jam 08:00!"),
-                                            ));
-                                          }else{
-                                            if (this.widget.daftaraktivitas != null) {
-                                              api.updatePekerjaan(dataIn,gambarPath!, tokenlistaktivitas!)
-                                                  .then((result) {
-                                                if (result=="success") {
-                                                  _deleteCacheDir();
-                                                  Navigator.pop(_scaffoldState.currentState!.context, true);
-                                                  // Navigator.pop(ScaffoldMessenger.of(context).context, true);
-                                                } else {
-                                                  Navigator.pop(_scaffoldState.currentState!.context, true);
-                                                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result),));
-                                                }
-                                              });
-
+                                            latitude: lat,
+                                            longitude: long,
+                                            // data_dukung: gambarPath,
+                                            tanggal: _date);
+                                          api.uploadPresensi(dataIn,gambarPath!, tokenlistaktivitas!).then((result) {
+                                            if (result=="success") {
+                                              _deleteCacheDir();
+                                              Navigator.pop(_scaffoldState.currentState!.context, true);
+                                              // Navigator.pop(ScaffoldMessenger.of(context).context, true);
                                             } else {
-                                              api.uploadPhotos(dataIn,gambarPath!, tokenlistaktivitas!).then((result) {
-                                                if (result=="success") {
-                                                  _deleteCacheDir();
-                                                  Navigator.pop(_scaffoldState.currentState!.context, true);
-                                                  // Navigator.pop(ScaffoldMessenger.of(context).context, true);
-                                                } else {
-                                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                    content: Text(result),
-                                                  ));
-                                                  //                                            _scaffoldState.currentState
-                                                  //                                                .showSnackBar(SnackBar(
-                                                  //                                              content: Text(
-                                                  //                                                  "Simpan data gagal"),
-                                                  //                                            ));
-                                                }
-                                              });
+                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                content: Text(result),
+                                              ));
                                             }
-                                          }
+                                          });
                                         } else {
                                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                             content: Text("Data belum lengkap"),
@@ -520,8 +516,7 @@ class _FormPresensiState extends State<FormPresensi> {
                                         }
                                       },
                                       child: Center(
-                                          child: Text(
-                                            widget.daftaraktivitas == null ? "Simpan" : "Ubah",
+                                          child: Text("Presensi",
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 17.0,
@@ -545,32 +540,99 @@ class _FormPresensiState extends State<FormPresensi> {
     );
   }
 
-  _getCurrentLocation() {
+  // _getCurrentLocation() {
+  //   loading = true!;
+  //   Geolocator
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
+  //       .then((Position position) {
+  //     setState(() {
+  //       _currentPosition = position;
+  //       _getAddressFromLatLng(_currentPosition!.latitude.toDouble(),_currentPosition!.longitude.toDouble());
+  //     });
+  //   }).catchError((e) {
+  //     print(e);
+  //   });
+  // }
+  //
+  // _getAddressFromLatLng(double lat, double long) async {
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+  //
+  //     Placemark place = placemarks[0];
+  //
+  //     setState(() {
+  //       _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  // checkGps() async {
+  //   servicestatus = await Geolocator.isLocationServiceEnabled();
+  //   if(servicestatus){
+  //     permission = await Geolocator.checkPermission();
+  //
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //       if (permission == LocationPermission.denied) {
+  //         print('Location permissions are denied');
+  //       }else if(permission == LocationPermission.deniedForever){
+  //         print("'Location permissions are permanently denied");
+  //       }else{
+  //         haspermission = true;
+  //       }
+  //     }else{
+  //       haspermission = true;
+  //     }
+  //
+  //     if(haspermission){
+  //       setState(() {
+  //         //refresh the UI
+  //       });
+  //
+  //       getLocation();
+  //     }
+  //   }else{
+  //     print("GPS Service is not enabled, turn on GPS location");
+  //   }
+  //
+  //   setState(() {
+  //     //refresh the UI
+  //   });
+  // }
+
+  getLocation() async {
     loading = true!;
-    Geolocator
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
-        .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-        _getAddressFromLatLng(_currentPosition!.latitude.toDouble(),_currentPosition!.longitude.toDouble());
-      });
-    }).catchError((e) {
-      print(e);
+    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude); //Output: 80.24599079
+    print(position.latitude); //Output: 29.6593457
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
+    long!=""?loading = false!:loading = true!;
+    setState(() {
+      //refresh UI
     });
-  }
 
-  _getAddressFromLatLng(double lat, double long) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high, //accuracy of the location data
+      distanceFilter: 100, //minimum distance (measured in meters) a
+      //device must move horizontally before an update event is generated;
+    );
 
-      Placemark place = placemarks[0];
+    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position position) {
+      print(position.longitude); //Output: 80.24599079
+      print(position.latitude); //Output: 29.6593457
+
+      long = position.longitude.toString();
+      lat = position.latitude.toString();
 
       setState(() {
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+        //refresh UI on update
       });
-    } catch (e) {
-      print(e);
-    }
+    });
   }
 
 //  void _onSelectedState(String value) {
@@ -594,10 +656,11 @@ class _FormPresensiState extends State<FormPresensi> {
 //  }
 
   bool validateInput() {
-    if (_date == "Belum diset" ||
-        ctrlUraianPekerjaan.text == "" ||
-        _timeMulai == ""||
-        _timeBatasCheckIn == "" ) {
+    if (_date == "Belum diset" //||
+        // ctrlUraianPekerjaan.text == "" ||
+       // _timeMulai == ""||
+       //  _timeBatasCheckIn == ""
+    ) {
       return false;
     } else {
       return true;

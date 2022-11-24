@@ -17,7 +17,7 @@ class ApiService {
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
   // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseUrl = "http://10.28.11.9/kertas_v2/index.php/api/";//laptope imam
+  String baseUrl = "http://10.28.11.18/kertas_v2/index.php/api/";//laptope imam
   // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
@@ -233,6 +233,30 @@ class ApiService {
       return data;
     } else {
       return null;
+    }
+  }
+
+  DaftarPresensiResponse presensiRes = new DaftarPresensiResponse();
+  Future<String> uploadPresensi(DaftarPresensi presensi,String path,String token) async {
+    Uri uri = Uri.parse(api.baseUrl+"absensi/tambahabsensi");
+    http.MultipartRequest request = http.MultipartRequest('POST', uri);
+    request.headers['Authorization'] = token;
+    request.fields['id_opd'] = presensi.idOpd!;
+    request.fields['id_users'] = presensi.idUsers!;
+    request.fields['latitude'] = presensi.latitude!;
+    request.fields['longitude'] = presensi.longitude!;
+    request.files.add(await http.MultipartFile.fromPath('data_dukung', path));
+    request.fields['tanggal'] = presensi.tanggal!;
+
+
+    http.StreamedResponse response = await request.send();
+    var responseBytes = await response.stream.toBytes();
+    var responseString = utf8.decode(responseBytes);
+    presensiRes = DaftarPresensiResponse.fromJson(json.decode(responseString));
+    if (presensiRes.status == "success") {
+      return presensiRes.status!;
+    } else {
+      return presensiRes.info!;
     }
   }
 

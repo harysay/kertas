@@ -111,7 +111,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
                                       height: double.infinity,
                                       // color: Color(0xFFFCF8E8),//kuning muda
                                       child: Padding(
-                                        padding: EdgeInsets.all(10.0),
+                                        padding: EdgeInsets.all(5.0),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,117 +156,6 @@ class _HistoryPresensi extends State<HistoryPresensi>{
                                   // COlumn 2 End
                                 ],
                               ),
-
-
-
-
-
-                              // child: Padding(
-                              //   padding: const EdgeInsets.all(5.0),
-                              //   child: Container(
-                              //     // height: 80, //atur lebar card list
-                              //     child: ListTile(
-                              //       leading: Column(
-                              //         crossAxisAlignment: CrossAxisAlignment.center,
-                              //         mainAxisAlignment: MainAxisAlignment.center,
-                              //         children: <Widget>[
-                              //           Text(aktivitas.tanggal!,style: TextStyle(fontSize: 14, color: Colors.black)),
-                              //           InkWell(
-                              //             child: new Container(
-                              //               child: Icon(
-                              //                 Icons.edit,
-                              //                 size: 20,
-                              //               ),
-                              //               height: 18,
-                              //             ),
-                              //           ),
-                              //           InkWell(
-                              //               child: new Container(
-                              //                 child: Icon(
-                              //                   Icons.arrow_forward_sharp,
-                              //                   size: 20,
-                              //                 ),
-                              //                 height: 10,
-                              //               )
-                              //           )
-                              //         ],
-                              //       ),
-                              //       title: Row(
-                              //           crossAxisAlignment: CrossAxisAlignment.start,
-                              //           children: <Widget>[
-                              //             Flexible(
-                              //                 child: new Text(aktivitas.tipePresensi!,
-                              //                     overflow: TextOverflow.fade,
-                              //                     maxLines: 2,
-                              //                     softWrap: false,
-                              //                     style: TextStyle(
-                              //                         fontSize: 18, color: Colors.black)))
-                              //           ]),
-                              //       subtitle: Row(
-                              //           crossAxisAlignment: CrossAxisAlignment.start,
-                              //           children: <Widget>[
-                              //             Flexible(
-                              //                 child: new Text(aktivitas.fullDate!,
-                              //                     style: TextStyle(
-                              //                         fontSize: 14, color: Colors.black)))
-                              //             //Text(aktivitas.uraianPekerjaan)
-                              //           ]),
-                              //       trailing: Column(
-                              //         children: <Widget>[
-                              //           Padding(
-                              //               padding: EdgeInsets.only(
-                              //                   bottom: 15)),
-                              //           InkWell(
-                              //             child: new Container(
-                              //               child: Icon(
-                              //                 Icons.delete,
-                              //                 size: 20,
-                              //               ),
-                              //               height: 30,
-                              //             ),
-                              //             onTap: () {
-                              //               showDialog(
-                              //                   context: context,
-                              //                   builder: (BuildContext context) {
-                              //                     return AlertDialog(
-                              //                       title: Text('Peringatan'),
-                              //                       content: Text('Apakah Anda ingin upload?'),
-                              //                       actions: <Widget>[
-                              //                         TextButton(
-                              //                           child: Text('Tidak'),
-                              //                           onPressed: () {
-                              //                             Navigator.of(context).pop();
-                              //                           },
-                              //                         ),
-                              //                         TextButton(
-                              //                           child: Text('Ya'),
-                              //                           onPressed: () {
-                              //                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Upload data sukses"),));
-                              //                             Navigator.of(context).pop();
-                              //                           },
-                              //                         )
-                              //                       ],
-                              //                     );
-                              //                   });
-                              //             },
-                              //           ),
-                              //           InkWell(
-                              //               child: new Container(
-                              //                 child: Icon(
-                              //                   Icons.arrow_back_sharp,
-                              //                   size: 20,
-                              //                 ),
-                              //                 height: 10,
-                              //               )
-                              //           )
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-
-
-
                             )/////////////////////////////////////////////////////////////////////////end card
                         ),
                       );
@@ -286,7 +175,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
   // Get Title Widget
   Widget getTitle(String title) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.0),
+      padding: EdgeInsets.only(bottom: 2.0),
       child: Text(style: TextStyle(fontSize: 22, color: Colors.black54),title),
     );
   }
@@ -294,8 +183,8 @@ class _HistoryPresensi extends State<HistoryPresensi>{
   // Get Subject Name
   Widget getSubName(String subName) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 4.0),
-      child: Text(style: TextStyle(fontSize: 18, color: Colors.black54),subName),
+      padding: EdgeInsets.only(bottom: 2.0),
+      child: Text(style: TextStyle(fontSize: 16, color: Colors.black54),subName),
     );
   }
 
@@ -309,7 +198,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
 
   Widget getStatus(String status) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 5.0),
+      padding: EdgeInsets.only(bottom: 1.0),
       child: Text(style: TextStyle(fontSize: 20, color: Colors.white),status),
     );
   }
@@ -322,7 +211,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
 
   Widget getTime(String time) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10.0),
+      padding: EdgeInsets.only(bottom: 5.0),
       child: Text(
           style: TextStyle(fontSize: 22, color: Colors.black),time),
     );
