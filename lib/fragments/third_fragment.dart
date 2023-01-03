@@ -67,7 +67,7 @@ class LaporanPage extends State<ThirdFragment> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0), // here the desired height
@@ -96,9 +96,9 @@ class LaporanPage extends State<ThirdFragment> {
                 Tab(
                   text: "Lusa",
                 ),
-                Tab(
-                  text: "1 Tahun",
-                ),
+                // Tab(
+                //   text: "1 Tahun",
+                // ),
               ],
             ),
         ),
@@ -108,7 +108,7 @@ class LaporanPage extends State<ThirdFragment> {
             BulanIni(tokenlogin: tokenloginku),
             BulanLalu(),
             BulanLusa(),
-            Setahun(),
+            // Setahun(),
           ],
         ),
       ),

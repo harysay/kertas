@@ -11,12 +11,12 @@ class DaftarPresensiResponse{
     this.data});
 
   factory DaftarPresensiResponse.fromJson(Map<String,dynamic>map){
-    // var allPresensi = map['data_absensi'] as List;
-    // List<DaftarPresensi> presensiList = allPresensi.map((i) => DaftarPresensi.fromJson(i)).toList();
+    var allPresensi = map['data_absensi'] as List;
+    List<DaftarPresensi> presensiList = allPresensi.map((i) => DaftarPresensi.fromJson(i)).toList();
     return DaftarPresensiResponse(
       status: map["status"],
         info: map["message"],
-        // data: presensiList
+        data: presensiList
     );
   }
 }

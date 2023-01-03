@@ -54,7 +54,7 @@ class AboutFragment extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     new Text("All rights reserved"),
-                    new Text("\u00a9 2022 Dinas Kominfo Kabupaten Kebumen"),
+                    new Text("\u00a9 2023 Dinas Kominfo Kabupaten Kebumen"),
                     new Text("Develop by Imanaji Hari Sayekti",style: TextStyle(
                       color: Colors.black12,
                       fontFamily: 'Pasifico',

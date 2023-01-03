@@ -17,7 +17,7 @@ class ApiService {
   //Development
   String urlGetdataPribadi = "https://development.kebumenkab.go.id/siltapkin/index.php/api/rekam/dataDiri?token=";
   // String baseUrl = "https://development.kebumenkab.go.id/kertas/index.php/api/";
-  String baseUrl = "http://10.28.11.18/kertas_v2/index.php/api/";//laptope imam
+  String baseUrl = "http://10.28.11.23/kertas_v2/index.php/api/";//laptope imam
   // String baseLamaAktivitas = "https://development.kebumenkab.go.id/kertas/index.php/api/pekerjaan/getpekerjaanbyhari/";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/siltapkin/index.php/api/login/proseslogin";
   // static String baseUrlLogin = "https://development.kebumenkab.go.id/kertas/index.php/api/auth/login";
@@ -236,6 +236,30 @@ class ApiService {
     }
   }
 
+  DaftarPresensiResponse presensibybulan = new DaftarPresensiResponse();
+  Future<List<DaftarPresensi>?> getAllPresensiByIdBulan() async {
+    var date = DateTime.now();
+    String _date = '${date.year}${date.month.toString().padLeft(2,'0')}';
+    //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
+    await getPrefFromApi();
+    final response = await http.get(Uri.parse(baseUrl+"absensi/absenbytanggal/"+iduser+"/"+_date),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "authorization": tokenlogin
+      },
+//      body: inputMap,
+    );
+
+    presensibybulan = DaftarPresensiResponse.fromJson(json.decode(response.body));
+    if (response.statusCode == 200) {
+      List<DaftarPresensi>? data = presensibybulan.data;
+      return data;
+    } else {
+      return null;
+    }
+  }
+
   DaftarPresensiResponse presensiRes = new DaftarPresensiResponse();
   Future<String> uploadPresensi(DaftarPresensi presensi,String path,String token) async {
     Uri uri = Uri.parse(api.baseUrl+"absensi/tambahabsensi");
@@ -246,7 +270,7 @@ class ApiService {
     request.fields['latitude'] = presensi.latitude!;
     request.fields['longitude'] = presensi.longitude!;
     request.files.add(await http.MultipartFile.fromPath('data_dukung', path));
-    request.fields['tanggal'] = presensi.tanggal!;
+    // request.fields['tanggal'] = presensi.tanggal!;
 
 
     http.StreamedResponse response = await request.send();
@@ -276,6 +300,30 @@ class ApiService {
     aktivitasBelum = DaftarAktivitasResponse.fromJson(json.decode(response.body));
     if (response.statusCode == 200) {
       List<DaftarAktivitas>? data = aktivitasBelum.data;
+      return data;
+    } else {
+      return null;
+    }
+  }
+
+  DaftarAktivitasResponse aktivitasPerbulan = new DaftarAktivitasResponse();
+  Future<List<DaftarAktivitas>?> getAllAktivitasByIdBulan() async {
+    var date = DateTime.now();
+    String _date = '${date.year}${date.month.toString().padLeft(2,'0')}';
+    //Map<String, dynamic> inputMap = {'DEMO-API-KEY': '$key'};
+    await getPrefFromApi();
+    final response = await http.get(Uri.parse(baseUrl+"pekerjaan/getpekerjaanbytanggal/"+iduser+"/"+_date),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "authorization": tokenlogin
+      },
+//      body: inputMap,
+    );
+
+    aktivitasPerbulan = DaftarAktivitasResponse.fromJson(json.decode(response.body));
+    if (response.statusCode == 200) {
+      List<DaftarAktivitas>? data = aktivitasPerbulan.data;
       return data;
     } else {
       return null;

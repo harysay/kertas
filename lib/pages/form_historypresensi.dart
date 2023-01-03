@@ -65,7 +65,7 @@ class _HistoryPresensi extends State<HistoryPresensi>{
         ),
       ),
       body: FutureBuilder<List<DaftarPresensi>?>(
-        future: api.getAllPresensiById(),
+        future: api.getAllPresensiByIdBulan(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             semuaPresensi = snapshot.data!;

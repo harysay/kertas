@@ -275,78 +275,78 @@ class _FormPresensiState extends State<FormPresensi> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      TextButton(
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(color: Colors.greenAccent)))
-                        ),
-                        onPressed: () {
-                          DatePicker.showDatePicker(context,
-                              theme: DatePickerTheme(
-                                containerHeight: 210.0,
-                              ),
-                              showTitleActions: true,
-                              minTime: DateTime(2019, 1, 1),
-                              maxTime: DateTime(2025, 12, 31), onConfirm: (date) {
-                                print('confirm $date');
-                                _date = '${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}';
-                                setState(() {});
-                              }, currentTime: DateTime.now(), locale: LocaleType.en);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text("Tanggal aktivitas",style: Theme.of(context).textTheme.caption),
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.date_range,
-                                              size: 18.0,
-                                            ),
-                                            Text(
-                                              " $_date",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18.0),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              Text("Ubah",
-                                style: TextStyle(
-                                    color: Colors.teal,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: <Widget>[
+                  //     TextButton(
+                  //       style: ButtonStyle(
+                  //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  //               RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
+                  //                   side: BorderSide(color: Colors.greenAccent)))
+                  //       ),
+                  //       onPressed: () {
+                  //         DatePicker.showDatePicker(context,
+                  //             theme: DatePickerTheme(
+                  //               containerHeight: 210.0,
+                  //             ),
+                  //             showTitleActions: true,
+                  //             minTime: DateTime(2019, 1, 1),
+                  //             maxTime: DateTime(2025, 12, 31), onConfirm: (date) {
+                  //               print('confirm $date');
+                  //               _date = '${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}';
+                  //               setState(() {});
+                  //             }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  //       },
+                  //       child: Container(
+                  //         alignment: Alignment.center,
+                  //         height: 50.0,
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: <Widget>[
+                  //             Row(
+                  //               children: <Widget>[
+                  //                 Column(
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                   children: <Widget>[
+                  //                     Text("Tanggal aktivitas",style: Theme.of(context).textTheme.caption),
+                  //                     Container(
+                  //                       child: Row(
+                  //                         children: <Widget>[
+                  //                           Icon(
+                  //                             Icons.date_range,
+                  //                             size: 18.0,
+                  //                           ),
+                  //                           Text(
+                  //                             " $_date",
+                  //                             style: TextStyle(
+                  //                                 fontWeight: FontWeight.bold,
+                  //                                 fontSize: 18.0),
+                  //                           ),
+                  //                         ],
+                  //                       ),
+                  //                     )
+                  //                   ],
+                  //                 ),
+                  //
+                  //               ],
+                  //             ),
+                  //             Text("Ubah",
+                  //               style: TextStyle(
+                  //                   color: Colors.teal,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   fontSize: 18.0),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       // color: Colors.white,
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
                   Container(
                       margin: EdgeInsets.only(left: 18.0, right: 18.0),
                       child: Column(
@@ -495,9 +495,9 @@ class _FormPresensiState extends State<FormPresensi> {
                                             idOpd: idOpd,
                                             idUsers: idUser,
                                             latitude: lat,
-                                            longitude: long,
+                                            longitude: long);
                                             // data_dukung: gambarPath,
-                                            tanggal: _date);
+                                            // tanggal: _date);
                                           api.uploadPresensi(dataIn,gambarPath!, tokenlistaktivitas!).then((result) {
                                             if (result=="success") {
                                               _deleteCacheDir();
@@ -656,8 +656,9 @@ class _FormPresensiState extends State<FormPresensi> {
 //  }
 
   bool validateInput() {
-    if (_date == "Belum diset" //||
-        // ctrlUraianPekerjaan.text == "" ||
+    if (lat == "" ||
+        long == "" ||
+        gambarPath==""
        // _timeMulai == ""||
        //  _timeBatasCheckIn == ""
     ) {

@@ -124,7 +124,7 @@ class _SecondFragmentState extends State<SecondFragment>{
     return Scaffold(
       key: _scaffoldState,
       body: FutureBuilder<List<DaftarAktivitas>?>(
-        future: api.getAllAktivitasById(),
+        future: api.getAllAktivitasByIdBulan(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             semuaAktivitas = snapshot.data!;
